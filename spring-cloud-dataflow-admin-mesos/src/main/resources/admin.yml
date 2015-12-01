@@ -9,10 +9,13 @@ security:
 
 spring:
   application:
-    name: spring-cloud-dataflow-admin
+    name: spring-cloud-dataflow-admin-mesos
   cloud:
     config:
       uri: http://localhost:8888
+
+marathon:
+  includes: org.springframework.cloud:spring-cloud-marathon-connector:@spring.cloud.marathon.connector.version@
 
 # If you prefer to use Eureka to locate the Config Server, you can do that by setting
 # spring.cloud.config.discovery.enabled=true (default "false"). The net result of that is 

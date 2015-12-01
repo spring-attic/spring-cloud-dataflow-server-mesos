@@ -19,6 +19,8 @@ package org.springframework.cloud.dataflow.module.deployer.marathon;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -53,6 +55,21 @@ public class MarathonProperties {
 	 * How many CPUs to allocate per module, can be overridden at deployment time.
 	 */
 	private double cpu = 0.5D;
+
+	/**
+	 * The set of dependencies to add at runtime to the deployed module launcher.
+	 * Typically includes the spring cloud marathon-connector library.
+	 */
+	private String includes;
+
+	@NotBlank
+	public String getIncludes() {
+		return includes;
+	}
+
+	public void setIncludes(String includes) {
+		this.includes = includes;
+	}
 
 	public double getMemory() {
 		return memory;

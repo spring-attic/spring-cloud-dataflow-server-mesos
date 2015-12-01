@@ -38,7 +38,6 @@ import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
 /**
  * A ModuleDeployer implementation for deploying modules as applications on Marathon, using the
  * ModuleLauncher Docker image.
- *
  * @author Eric Bottard
  */
 public class MarathonModuleDeployer implements ModuleDeployer {
@@ -47,8 +46,6 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 	 * The name of the ENV variable that is added to apps to identify Spring Cloud Data Flow modules.
 	 */
 	private static final String SPRING_CLOUD_DATAFLOW_MODULE = "SPRING_CLOUD_DATAFLOW_MODULE";
-
-	public static final String CONNECTOR_DEPENDENCY = "org.springframework.cloud:spring-cloud-marathon-connector:1.0.0.BUILD-SNAPSHOT";
 
 	private final MarathonProperties properties;
 
@@ -79,9 +76,10 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		args.putAll(request.getDefinition().getParameters());
 		String includes = args.get("includes");
 		if (includes != null) {
-			includes += "," + CONNECTOR_DEPENDENCY;
-		} else {
-			includes = CONNECTOR_DEPENDENCY;
+			includes += "," + properties.getIncludes();
+		}
+		else {
+			includes = properties.getIncludes();
 		}
 		args.put("includes", includes);
 		Map<String, String> qualifiedArgs = ModuleArgumentQualifier.qualifyArgs(0, args);
@@ -109,6 +107,7 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		}
 		return ModuleDeploymentId.fromModuleDefinition(request.getDefinition());
 	}
+
 	@Override
 	public void undeploy(ModuleDeploymentId id) {
 		String appId = deduceAppId(id);
@@ -157,9 +156,11 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		ModuleStatus.Builder result = ModuleStatus.of(id);
 		int requestedInstances = app.getInstances();
 		int actualInstances = 0;
-		for (Task task : app.getTasks()) {
-			result.with(MarathonModuleInstanceStatus.up(app, task));
-			actualInstances++;
+		if (app.getTasks() != null) {
+			for (Task task : app.getTasks()) {
+				result.with(MarathonModuleInstanceStatus.up(app, task));
+				actualInstances++;
+			}
 		}
 		for (int i = actualInstances; i < requestedInstances; i++) {
 			result.with(MarathonModuleInstanceStatus.down(app));
@@ -180,7 +181,6 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 	private String deduceAppId(ModuleDeploymentRequest request) {
 		return request.getDefinition().getGroup() + "-" + request.getDefinition().getLabel();
 	}
-
 
 
 }

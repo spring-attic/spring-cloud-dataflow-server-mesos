@@ -18,6 +18,7 @@ package org.springframework.cloud.dataflow.admin.spi.marathon;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
@@ -34,22 +35,18 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @author Eric Bottard
  */
 @Configuration
+@EnableConfigurationProperties(MarathonProperties.class)
 public class MarathonConfiguration {
 	protected static class MarathonConfig {
 
 		@Bean
-		public MarathonProperties marathonProperties() {
-			return new MarathonProperties();
+		public ModuleDeployer processModuleDeployer(MarathonProperties marathonProperties) {
+			return new MarathonModuleDeployer(marathonProperties);
 		}
 
 		@Bean
-		public ModuleDeployer processModuleDeployer() {
-			return new MarathonModuleDeployer(marathonProperties());
-		}
-
-		@Bean
-		public ModuleDeployer taskModuleDeployer() {
-			return processModuleDeployer();
+		public ModuleDeployer taskModuleDeployer(MarathonProperties marathonProperties) {
+			return processModuleDeployer(marathonProperties);
 		}
 	}
 

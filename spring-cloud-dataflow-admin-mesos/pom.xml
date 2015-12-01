@@ -12,6 +12,8 @@
 	</parent>
 	<properties>
 		<start-class>org.springframework.cloud.dataflow.admin.AdminApplication</start-class>
+		<!-- The following version property is inserted in admin.yml -->
+		<spring.cloud.marathon.connector.version>${project.version}</spring.cloud.marathon.connector.version>
 	</properties>
 	<dependencies>
 		<dependency>

@@ -23,8 +23,8 @@ import java.util.Random;
 import mesosphere.marathon.client.model.v2.App;
 import mesosphere.marathon.client.model.v2.Task;
 
+import org.springframework.cloud.dataflow.module.DeploymentState;
 import org.springframework.cloud.dataflow.module.ModuleInstanceStatus;
-import org.springframework.cloud.dataflow.module.ModuleStatus;
 import org.springframework.util.StringUtils;
 
 /**
@@ -64,8 +64,8 @@ public class MarathonModuleInstanceStatus implements ModuleInstanceStatus {
 	}
 
 	@Override
-	public ModuleStatus.State getState() {
-		return task != null ? ModuleStatus.State.deployed : ModuleStatus.State.failed;
+	public DeploymentState getState() {
+		return task != null ? DeploymentState.deployed : DeploymentState.failed;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-# spring-cloud-dataflow-admin-mesos [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos)
+# spring-cloud-dataflow-admin-mesos image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos.svg?label=ready&title=Ready[Stories in Ready, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos] image:https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos.svg?label=In%20Progress&title=In%20Progress[Stories in Progress, link=http://waffle.io/spring-cloud/spring-cloud-dataflow-admin-mesos]
 
 Admin implementation for deploying https://github.com/spring-cloud/spring-cloud-stream[Spring Cloud Stream]
 modules to Mesos https://mesosphere.github.io/marathon/[Marathon].

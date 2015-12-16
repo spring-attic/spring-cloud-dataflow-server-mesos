@@ -13,13 +13,8 @@ SPI implementation for deploying https://github.com/spring-cloud/spring-cloud-st
 2. Build and install this repository:
 +
 ```
-./mvnw install
+./mvnw clean package
 ```
-+
-You'll want to `install`, because this deployer currently relies on
-`spring-cloud-marathon-connector` that will need to be in your local maven repository later.
-This requirement (and step 4 below) will be later alleviated when `spring-cloud-marathon-connector`
-is published as an official Spring Cloud Connector.
 
 3. The SPI currently assumes that there will be a running redis Marathon app running, named `redis`.
 +

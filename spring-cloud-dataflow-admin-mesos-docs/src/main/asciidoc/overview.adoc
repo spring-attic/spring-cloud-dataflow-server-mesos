@@ -1,8 +1,6 @@
 [[overview]]
-== Spring Cloud Data Flow Mesos
+= Spring Cloud Data Flow Mesos Documentation
 
-SPI implementation for deploying Spring Cloud Stream modules to Marathon.
+This project provide support for deploying Spring Cloud Stream modules to Mesos+Marathon.
 
-=== Overview
 
-TBD

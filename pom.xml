@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-admin-mesos-parent</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.M1</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-dataflow-parent</artifactId>
 		<version>1.0.0.M2</version>
-		<relativePath/>  <!-- lookup parent from repository -->
+		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 
 	<modules>

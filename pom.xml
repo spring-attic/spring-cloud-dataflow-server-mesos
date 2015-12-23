@@ -19,7 +19,7 @@
 	</modules>
 
 	<properties>
-		<marathon-connector.client.version>1.0.0.BUILD-SNAPSHOT</marathon-connector.client.version>
+		<marathon-connector.client.version>1.0.0.M1</marathon-connector.client.version>
 	</properties>
 
 	<dependencies>

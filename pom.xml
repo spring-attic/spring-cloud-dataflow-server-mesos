@@ -18,16 +18,4 @@
 		<module>spring-cloud-dataflow-admin-mesos-docs</module>
 	</modules>
 
-	<properties>
-		<marathon-connector.client.version>1.0.0.M1</marathon-connector.client.version>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-marathon-connector</artifactId>
-			<version>${marathon-connector.client.version}</version>
-		</dependency>
-	</dependencies>
-
 </project>

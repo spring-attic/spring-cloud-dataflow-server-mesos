@@ -29,6 +29,8 @@ import mesosphere.marathon.client.model.v2.Port;
 import mesosphere.marathon.client.model.v2.Task;
 import mesosphere.marathon.client.utils.MarathonException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
 import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
 import org.springframework.cloud.dataflow.module.ModuleStatus;
@@ -41,6 +43,8 @@ import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
  * @author Eric Bottard
  */
 public class MarathonModuleDeployer implements ModuleDeployer {
+
+	private static Logger log = LoggerFactory.getLogger(MarathonModuleDeployer.class);
 
 	/**
 	 * The name of the ENV variable that is added to apps to identify Spring Cloud Data Flow modules.
@@ -90,6 +94,9 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		env.put("spring.profiles.active", "cloud");
 		env.put(SPRING_CLOUD_DATAFLOW_MODULE, request.getDefinition().getGroup() + ":" + request.getDefinition().getLabel());
 
+		// Pass API Endpoint under this environment variable for discovery by marathon cloud connector
+		env.put("SPRING_CLOUD_MARATHON_HOST", properties.getApiEndpoint());
+
 		app.setEnv(env);
 
 		Double cpus = deduceCpus(request);
@@ -98,6 +105,8 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		app.setCpus(cpus);
 		app.setMem(memory);
 		app.setInstances(request.getCount());
+
+		log.info("Creating app with definition: " + app.toString());
 
 		try {
 			marathon.createApp(app);

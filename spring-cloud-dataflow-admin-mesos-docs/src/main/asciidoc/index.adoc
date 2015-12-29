@@ -41,7 +41,11 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :attributes: allow-uri-read
 // ======================================================================================
 
+include::introduction.adoc[]
+
 include::overview.adoc[]
+
+include::getting-started.adoc[]
 
 include::modules.adoc[]
 

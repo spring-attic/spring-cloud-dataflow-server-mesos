@@ -9,15 +9,15 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-dataflow-parent</artifactId>
-		<version>1.0.0.M2</version>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
 		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 	<properties>
 		<start-class>org.springframework.cloud.dataflow.admin.AdminApplication</start-class>
 		<!-- The following marathon connector version property is inserted in admin.yml -->
-		<spring.cloud.marathon.connector.version>1.0.0.M1</spring.cloud.marathon.connector.version>
-		<marathon-connector.client.version>1.0.0.M1</marathon-connector.client.version>
-		<spring-cloud-dataflow.version>1.0.0.M2</spring-cloud-dataflow.version>
+		<spring.cloud.marathon.connector.version>1.0.0.BUILD-SNAPSHOT</spring.cloud.marathon.connector.version>
+		<marathon-connector.client.version>1.0.0.BUILD-SNAPSHOT</marathon-connector.client.version>
+		<spring-cloud-dataflow.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-dataflow.version>
 		<marathon-client.version>0.4.11</marathon-client.version>
 	</properties>
 	<dependencies>

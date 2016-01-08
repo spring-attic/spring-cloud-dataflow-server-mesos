@@ -39,7 +39,7 @@ public class MarathonProperties {
 	/**
 	 * The docker image to use for launching modules.
 	 */
-	private String image = "springcloud/stream-module-launcher:1.0.0.M3";
+	private String image = "springcloud/stream-module-launcher";
 
 	/**
 	 * Additional arguments to pass to the module launcher.

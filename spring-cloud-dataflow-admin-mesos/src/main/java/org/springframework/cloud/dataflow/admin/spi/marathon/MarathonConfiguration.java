@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-16 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
+import org.springframework.cloud.dataflow.admin.config.AdminProperties;
 import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
 import org.springframework.cloud.dataflow.module.deployer.marathon.MarathonModuleDeployer;
 import org.springframework.cloud.dataflow.module.deployer.marathon.MarathonProperties;
@@ -33,20 +34,23 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * Configuration used when running on Marathon.
  *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  */
 @Configuration
-@EnableConfigurationProperties(MarathonProperties.class)
+@EnableConfigurationProperties({MarathonProperties.class, AdminProperties.class})
 public class MarathonConfiguration {
 	protected static class MarathonConfig {
 
 		@Bean
-		public ModuleDeployer processModuleDeployer(MarathonProperties marathonProperties) {
-			return new MarathonModuleDeployer(marathonProperties);
+		public ModuleDeployer processModuleDeployer(MarathonProperties marathonProperties,
+				AdminProperties adminProperties) {
+			return new MarathonModuleDeployer(marathonProperties, adminProperties);
 		}
 
 		@Bean
-		public ModuleDeployer taskModuleDeployer(MarathonProperties marathonProperties) {
-			return processModuleDeployer(marathonProperties);
+		public ModuleDeployer taskModuleDeployer(MarathonProperties marathonProperties,
+				AdminProperties adminProperties) {
+			return processModuleDeployer(marathonProperties, adminProperties);
 		}
 	}
 

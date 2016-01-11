@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-16 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 
 package org.springframework.cloud.dataflow.module.deployer.marathon;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -40,11 +37,6 @@ public class MarathonProperties {
 	 * The docker image to use for launching modules.
 	 */
 	private String image = "springcloud/stream-module-launcher";
-
-	/**
-	 * Additional arguments to pass to the module launcher.
-	 */
-	private Map<String, String> launcherProperties = new HashMap<>();
 
 	/**
 	 * How much memory to allocate per module, can be overridden at deployment time.
@@ -101,13 +93,5 @@ public class MarathonProperties {
 
 	public void setImage(String image) {
 		this.image = image;
-	}
-
-	public Map<String, String> getLauncherProperties() {
-		return launcherProperties;
-	}
-
-	public void setLauncherProperties(Map<String, String> launcherProperties) {
-		this.launcherProperties = launcherProperties;
 	}
 }

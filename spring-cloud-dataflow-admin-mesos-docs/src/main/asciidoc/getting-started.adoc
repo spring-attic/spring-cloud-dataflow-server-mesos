@@ -37,7 +37,7 @@ NOTE: If you are switching between milestone and snapshot versions of the admin 
 ```
 $ wget http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-admin-mesos/1.0.0.BUILD-SNAPSHOT/spring-cloud-dataflow-admin-mesos-1.0.0.BUILD-SNAPSHOT.jar
 
-$ java -jar spring-cloud-dataflow-admin-mesos-1.0.0.BUILD-SNAPSHOT.jar --marathon.apiEndpoint=http://192.168.33.10:8080 --marathon.launcherProperties.remoteRepositories=https://repo.spring.io/libs-milestone
+$ java -jar spring-cloud-dataflow-admin-mesos-1.0.0.BUILD-SNAPSHOT.jar --marathon.apiEndpoint=http://192.168.33.10:8080 --remoteRepositories=https://repo.spring.io/libs-milestone
 ```
 +
 You can also pass in properties to set default values for memory and cpu resource request.  For example `--marathon.cpu=0.25` will by default allocate 25% of the CPU for the application vs. the default value of 50%.  You can see all the available options in the https://github.com/spring-cloud/spring-cloud-dataflow-admin-mesos/blob/master/spring-cloud-dataflow-admin-mesos/src/main/java/org/springframework/cloud/dataflow/module/deployer/marathon/MarathonProperties.java[MarathonProperties.java] file.  
@@ -48,7 +48,7 @@ cd ~/.m2/repository
 python -m SimpleHTTPServer 8000
 ```
 +
-Then use --marathon.launcherProperties.remoteRepositories=https://repo.spring.io/libs-milestone,http://<YourHostIP>:8000 when launching the admin server.
+Then use --remoteRepositories=https://repo.spring.io/libs-milestone,http://<YourHostIP>:8000 when launching the admin server.
 +
 . Download and run the Spring Cloud Data Flow shell.
 +

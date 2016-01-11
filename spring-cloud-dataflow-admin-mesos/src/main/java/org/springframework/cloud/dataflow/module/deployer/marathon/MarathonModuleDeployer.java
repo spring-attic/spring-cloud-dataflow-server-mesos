@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-16 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.cloud.dataflow.admin.config.AdminProperties;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
+import org.springframework.cloud.dataflow.module.ModuleStatus;
+import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
+import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
+
 import mesosphere.marathon.client.Marathon;
 import mesosphere.marathon.client.MarathonClient;
 import mesosphere.marathon.client.model.v2.App;
@@ -28,14 +38,6 @@ import mesosphere.marathon.client.model.v2.Docker;
 import mesosphere.marathon.client.model.v2.Port;
 import mesosphere.marathon.client.model.v2.Task;
 import mesosphere.marathon.client.utils.MarathonException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
-import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
-import org.springframework.cloud.dataflow.module.ModuleStatus;
-import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
-import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
 
 /**
  * A ModuleDeployer implementation for deploying modules as applications on Marathon, using the
@@ -51,13 +53,16 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 	 */
 	private static final String SPRING_CLOUD_DATAFLOW_MODULE = "SPRING_CLOUD_DATAFLOW_MODULE";
 
-	private final MarathonProperties properties;
+	private final MarathonProperties marathonProperties;
+
+	private final AdminProperties adminProperties;
 
 	private final Marathon marathon;
 
-	public MarathonModuleDeployer(MarathonProperties properties) {
-		this.properties = properties;
-		marathon = MarathonClient.getInstance(properties.getApiEndpoint());
+	public MarathonModuleDeployer(MarathonProperties marathonProperties, AdminProperties adminProperties) {
+		this.marathonProperties = marathonProperties;
+		this.adminProperties = adminProperties;
+		marathon = MarathonClient.getInstance(marathonProperties.getApiEndpoint());
 	}
 
 	@Override
@@ -65,7 +70,7 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		App app = new App();
 		Container container = new Container();
 		Docker docker = new Docker();
-		docker.setImage(properties.getImage());
+		docker.setImage(marathonProperties.getImage());
 		Port port = new Port(8080);
 		port.setHostPort(0);
 		docker.setPortMappings(Arrays.asList(port));
@@ -80,22 +85,22 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		args.putAll(request.getDefinition().getParameters());
 		String includes = args.get("includes");
 		if (includes != null) {
-			includes += "," + properties.getIncludes();
+			includes += "," + marathonProperties.getIncludes();
 		}
 		else {
-			includes = properties.getIncludes();
+			includes = marathonProperties.getIncludes();
 		}
 		args.put("includes", includes);
 		Map<String, String> qualifiedArgs = ModuleArgumentQualifier.qualifyArgs(0, args);
 		Map<String, String> env = new HashMap<>();
 		env.putAll(qualifiedArgs);
-		env.putAll(properties.getLauncherProperties());
+		env.putAll(adminProperties.asStringProperties());
 		env.put("MODULES", request.getCoordinates().toString());
 		env.put("spring.profiles.active", "cloud");
 		env.put(SPRING_CLOUD_DATAFLOW_MODULE, request.getDefinition().getGroup() + ":" + request.getDefinition().getLabel());
 
 		// Pass API Endpoint under this environment variable for discovery by marathon cloud connector
-		env.put("SPRING_CLOUD_MARATHON_HOST", properties.getApiEndpoint());
+		env.put("SPRING_CLOUD_MARATHON_HOST", marathonProperties.getApiEndpoint());
 
 		app.setEnv(env);
 
@@ -179,12 +184,12 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 
 	private Double deduceMemory(ModuleDeploymentRequest request) {
 		String override = request.getDeploymentProperties().get("marathon.memory");
-		return override != null ? Double.valueOf(override) : properties.getMemory();
+		return override != null ? Double.valueOf(override) : marathonProperties.getMemory();
 	}
 
 	private Double deduceCpus(ModuleDeploymentRequest request) {
 		String override = request.getDeploymentProperties().get("marathon.cpu");
-		return override != null ? Double.valueOf(override) : properties.getCpu();
+		return override != null ? Double.valueOf(override) : marathonProperties.getCpu();
 	}
 
 	private String deduceAppId(ModuleDeploymentRequest request) {

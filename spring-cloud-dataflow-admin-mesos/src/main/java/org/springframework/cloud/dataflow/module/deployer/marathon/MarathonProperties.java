@@ -54,6 +54,20 @@ public class MarathonProperties {
 	 */
 	private String includes;
 
+	/**
+	 * The default set of placement constraints (using Marathon syntax) to apply to all
+	 * modules, if any.
+	 */
+	private String[] constraints = new String[0];
+
+	public String[] getConstraints() {
+		return constraints;
+	}
+
+	public void setConstraints(String[] constraints) {
+		this.constraints = constraints;
+	}
+
 	@NotBlank
 	public String getIncludes() {
 		return includes;

@@ -16,20 +16,14 @@
 
 package org.springframework.cloud.dataflow.module.deployer.marathon;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.cloud.dataflow.admin.config.AdminProperties;
-import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
-import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
-import org.springframework.cloud.dataflow.module.ModuleStatus;
-import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
-import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mesosphere.marathon.client.Marathon;
 import mesosphere.marathon.client.MarathonClient;
@@ -39,6 +33,17 @@ import mesosphere.marathon.client.model.v2.Docker;
 import mesosphere.marathon.client.model.v2.Port;
 import mesosphere.marathon.client.model.v2.Task;
 import mesosphere.marathon.client.utils.MarathonException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.cloud.dataflow.admin.config.AdminProperties;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
+import org.springframework.cloud.dataflow.module.ModuleStatus;
+import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
+import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * A ModuleDeployer implementation for deploying modules as applications on Marathon, using the
@@ -111,10 +116,14 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 
 		Double cpus = deduceCpus(request);
 		Double memory = deduceMemory(request);
+		List<Constraint> constraints = deduceConstraints(request);
 
 		app.setCpus(cpus);
 		app.setMem(memory);
 		app.setInstances(request.getCount());
+		for (Constraint constraint : constraints) {
+			app.addConstraint(constraint.field, constraint.operator, constraint.parameter);
+		}
 
 		log.info("Creating app with definition: " + app.toString());
 
@@ -197,9 +206,41 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		return override != null ? Double.valueOf(override) : marathonProperties.getCpu();
 	}
 
+	private List<Constraint> deduceConstraints(ModuleDeploymentRequest request) {
+		String[] additional = StringUtils.commaDelimitedListToStringArray(request.getDeploymentProperties().get("marathon.constraints"));
+		List<Constraint> result = new ArrayList<>(additional.length + marathonProperties.getConstraints().length);
+		for (String s : marathonProperties.getConstraints()) {
+			result.add(new Constraint(s));
+		}
+		for (String s : additional) {
+			result.add(new Constraint(s));
+		}
+		return result;
+	}
+
 	private String deduceAppId(ModuleDeploymentRequest request) {
 		return request.getDefinition().getGroup() + "-" + request.getDefinition().getLabel();
 	}
 
+	/**
+	 * Represents a placement constraint, with a field, operator and optional parameter.
+	 *
+	 * @author Eric Bottard
+	 */
+	private static class Constraint {
+
+		private static final Pattern PARSE_REGEX = Pattern.compile("(?<field>[^ ]+) (?<op>[^ ]+)( (?<param>.+))?");
+		private String field;
+		private String operator;
+		private String parameter;
+
+		private Constraint(String raw) {
+			Matcher matcher = PARSE_REGEX.matcher(raw);
+			Assert.isTrue(matcher.matches(), "Could not parse [" + raw + "] as a Marathon constraint (field operator param?)");
+			this.field = matcher.group("field");
+			this.operator = matcher.group("op");
+			this.parameter = matcher.group("param"); // may be null
+	}
+	}
 
 }

@@ -17,6 +17,7 @@
 package org.springframework.cloud.dataflow.module.deployer.marathon;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,9 @@ import mesosphere.marathon.client.utils.MarathonException;
 /**
  * A ModuleDeployer implementation for deploying modules as applications on Marathon, using the
  * ModuleLauncher Docker image.
+ *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  */
 public class MarathonModuleDeployer implements ModuleDeployer {
 
@@ -92,6 +95,8 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		}
 		args.put("includes", includes);
 		Map<String, String> qualifiedArgs = ModuleArgumentQualifier.qualifyArgs(0, args);
+		String jmxDomainName = String.format("%s.%s", request.getDefinition().getGroup(), request.getDefinition().getLabel());
+		qualifiedArgs.putAll(ModuleArgumentQualifier.qualifyArgs(0, Collections.singletonMap(JMX_DEFAULT_DOMAIN_KEY, jmxDomainName)));
 		Map<String, String> env = new HashMap<>();
 		env.putAll(qualifiedArgs);
 		env.putAll(adminProperties.asStringProperties());

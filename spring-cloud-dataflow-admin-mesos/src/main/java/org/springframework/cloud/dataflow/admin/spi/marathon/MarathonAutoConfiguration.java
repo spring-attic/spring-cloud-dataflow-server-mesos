@@ -38,7 +38,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  */
 @Configuration
 @EnableConfigurationProperties({MarathonProperties.class, AdminProperties.class})
-public class MarathonConfiguration {
+public class MarathonAutoConfiguration {
 	protected static class MarathonConfig {
 
 		@Bean

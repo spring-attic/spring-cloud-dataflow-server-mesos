@@ -20,7 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.dataflow.server.EnableDataFlowServer;
 
 /**
- * Bootstrap class for the Kubernetes Spring Cloud Data Flow Server.
+ * Bootstrap class for the Mesos Spring Cloud Data Flow Server.
  *
  * @author Thomas Risberg
  */

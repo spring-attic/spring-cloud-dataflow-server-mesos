@@ -9,7 +9,6 @@
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-dataflow-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
-		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 	<properties>
 		<marathon-connector.client.version>1.0.0.BUILD-SNAPSHOT</marathon-connector.client.version>

@@ -13,7 +13,7 @@
 	</parent>
 	<properties>
 		<start-class>org.springframework.cloud.dataflow.server.mesos.MesosDataFlowServer</start-class>
-		<!-- The following marathon connector version property is inserted in server.yml -->
+		<!-- The following marathon connector version property is inserted in dataflow-server.yml -->
 		<spring.cloud.marathon.connector.version>1.0.0.BUILD-SNAPSHOT</spring.cloud.marathon.connector.version>
 	</properties>
 	<dependencies>

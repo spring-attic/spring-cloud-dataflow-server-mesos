@@ -36,7 +36,7 @@ public class MarathonProperties {
 	/**
 	 * The docker image to use for launching modules.
 	 */
-	private String image = "springcloud/stream-module-launcher";
+	private String image = "springcloud/dataflow-app-launcher";
 
 	/**
 	 * How much memory to allocate per module, can be overridden at deployment time.

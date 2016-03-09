@@ -1,0 +1,102 @@
+:numbered!:
+[appendix]
+[[test-cluster]]
+
+== Test Cluster
+Here are brief setup instructions for setting up a local Vagrant single-node cluster. The Mesos endpoint will be http://192.168.33.10:5050 and the Marathon endpoint will be http://192.168.33.10:8080.
+
+=== Create Vagrant file with 64-bit Ubuntu
+
+First create the `Vagrant` file with necessary customizations:
+
+----
+$ vi Vagrantfile
+----
+
+Add the following content and save the file:
+
+----
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+
+  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.hostname = "mesos"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "4096"
+    vb.cpus = 4
+  end
+
+end
+----
+
+Next, update the box to the latest version and start it:
+
+----
+$ vagrant box update
+$ vagrant up
+----
+
+=== Install Mesos, Marathon and Docker
+
+We can now ssh to the instance to install the necessary bits:
+
+----
+$ vagrant ssh
+----
+
+The rest of these instructions are run from within this ssh shell.
+
+. Refresh the apt repo and install Docker:
++
+----
+vagrant@mesos:~$ sudo apt-get -y update
+vagrant@mesos:~$ wget -qO- https://get.docker.com/ | sh
+vagrant@mesos:~$ sudo usermod -aG docker vagrant
+----
++
+. Install needed repos:
++
+----
+vagrant@mesos:~$ echo "deb http://repos.mesosphere.io/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mesosphere.list
+vagrant@mesos:~$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
+vagrant@mesos:~$ sudo add-apt-repository ppa:webupd8team/java -y
+vagrant@mesos:~$ sudo apt-get -y update
+----
++
+. Install Java:
++
+----
+vagrant@mesos:~$ sudo apt-get install oracle-java8-installer
+----
++
+. Install Mesos and Marathon:
++
+----
+vagrant@mesos:~$ sudo apt-get -y install mesos marathon
+----
++
+. Add Docker as a containerizer:
++
+----
+vagrant@mesos:~$ echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
+----
++
+. Set the IP address as the hostname used for the slave:
++
+----
+vagrant@mesos:~$ echo $(/sbin/ifconfig eth1 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}') | sudo tee /etc/mesos-slave/hostname
+----
++
+. Reboot the server
++
+----
+vagrant@mesos:~$ sudo reboot
+----
+
+
+
+

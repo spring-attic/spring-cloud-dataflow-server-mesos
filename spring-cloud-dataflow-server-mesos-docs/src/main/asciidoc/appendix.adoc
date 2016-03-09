@@ -1,5 +1,6 @@
 [[appendix]]
 = Appendices
 
+include::appendix-test-cluster.adoc[]
 include::{dataflow-asciidoc}/appendix-building.adoc[]
 include::{dataflow-asciidoc}/appendix-contributing.adoc[]

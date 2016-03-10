@@ -21,10 +21,10 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
+import org.springframework.cloud.dataflow.app.resolver.MavenProperties;
 import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
 import org.springframework.cloud.dataflow.module.deployer.marathon.MarathonModuleDeployer;
 import org.springframework.cloud.dataflow.module.deployer.marathon.MarathonProperties;
-import org.springframework.cloud.dataflow.server.config.DataFlowServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -37,19 +37,19 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @author Ilayaperumal Gopinathan
  */
 @Configuration
-@EnableConfigurationProperties({MarathonProperties.class, DataFlowServerProperties.class})
+@EnableConfigurationProperties({MarathonProperties.class, MavenProperties.class})
 public class MarathonAutoConfiguration {
 	protected static class MarathonConfig {
 
 		@Bean
 		public ModuleDeployer processModuleDeployer(MarathonProperties marathonProperties,
-		                                            DataFlowServerProperties serverProperties) {
+													MavenProperties serverProperties) {
 			return new MarathonModuleDeployer(marathonProperties, serverProperties);
 		}
 
 		@Bean
 		public ModuleDeployer taskModuleDeployer(MarathonProperties marathonProperties,
-		                                         DataFlowServerProperties serverProperties) {
+												 MavenProperties serverProperties) {
 			return processModuleDeployer(marathonProperties, serverProperties);
 		}
 	}

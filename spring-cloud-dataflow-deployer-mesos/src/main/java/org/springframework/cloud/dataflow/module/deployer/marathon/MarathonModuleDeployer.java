@@ -21,16 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
-import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
-import org.springframework.cloud.dataflow.module.ModuleStatus;
-import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
-import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
-import org.springframework.cloud.dataflow.server.config.DataFlowServerProperties;
-
 import mesosphere.marathon.client.Marathon;
 import mesosphere.marathon.client.MarathonClient;
 import mesosphere.marathon.client.model.v2.App;
@@ -39,6 +29,15 @@ import mesosphere.marathon.client.model.v2.Docker;
 import mesosphere.marathon.client.model.v2.Port;
 import mesosphere.marathon.client.model.v2.Task;
 import mesosphere.marathon.client.utils.MarathonException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.cloud.dataflow.app.resolver.MavenProperties;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentId;
+import org.springframework.cloud.dataflow.core.ModuleDeploymentRequest;
+import org.springframework.cloud.dataflow.module.ModuleStatus;
+import org.springframework.cloud.dataflow.module.deployer.ModuleArgumentQualifier;
+import org.springframework.cloud.dataflow.module.deployer.ModuleDeployer;
 
 /**
  * A ModuleDeployer implementation for deploying modules as applications on Marathon, using the
@@ -58,13 +57,13 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 
 	private final MarathonProperties marathonProperties;
 
-	private final DataFlowServerProperties serverProperties;
+	private final MavenProperties mavenProperties;
 
 	private final Marathon marathon;
 
-	public MarathonModuleDeployer(MarathonProperties marathonProperties, DataFlowServerProperties serverProperties) {
+	public MarathonModuleDeployer(MarathonProperties marathonProperties, MavenProperties mavenProperties) {
 		this.marathonProperties = marathonProperties;
-		this.serverProperties = serverProperties;
+		this.mavenProperties = mavenProperties;
 		marathon = MarathonClient.getInstance(marathonProperties.getApiEndpoint());
 	}
 
@@ -99,7 +98,7 @@ public class MarathonModuleDeployer implements ModuleDeployer {
 		qualifiedArgs.putAll(ModuleArgumentQualifier.qualifyArgs(0, Collections.singletonMap(JMX_DEFAULT_DOMAIN_KEY, jmxDomainName)));
 		Map<String, String> env = new HashMap<>();
 		env.putAll(qualifiedArgs);
-		env.putAll(serverProperties.asStringProperties());
+		env.putAll(mavenProperties.asStringProperties());
 		env.put("MODULES", request.getCoordinates().toString());
 		env.put("spring.profiles.active", "cloud");
 		env.put(SPRING_CLOUD_DATAFLOW_MODULE, request.getDefinition().getGroup() + ":" + request.getDefinition().getLabel());

@@ -14,10 +14,34 @@
 	</parent>
 
 	<modules>
-		<module>spring-cloud-dataflow-deployer-mesos</module>
 		<module>spring-cloud-dataflow-server-mesos-docs</module>
 		<module>spring-cloud-dataflow-server-mesos</module>
 		<module>spring-cloud-starter-dataflow-server-mesos</module>
 	</modules>
+
+	<properties>
+		<spring-cloud-dataflow.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-dataflow.version>
+		<spring-cloud-mesos-deployer.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-mesos-deployer.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-dataflow-server-mesos</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-mesos-deployer</artifactId>
+				<version>${spring-cloud-mesos-deployer.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dataflow-server-core</artifactId>
+				<version>${spring-cloud-dataflow.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

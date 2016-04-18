@@ -17,8 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-dataflow-deployer-mesos</artifactId>
-			<version>${project.version}</version>
+			<artifactId>spring-cloud-mesos-deployer</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

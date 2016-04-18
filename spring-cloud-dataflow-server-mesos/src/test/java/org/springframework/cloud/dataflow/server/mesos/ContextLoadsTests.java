@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.cloud.dataflow.server.marathon;
+package org.springframework.cloud.dataflow.server.mesos;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = org.springframework.cloud.dataflow.server.mesos.MesosDataFlowServer.class)
+@SpringApplicationConfiguration(classes = MesosDataFlowServer.class)
 public class ContextLoadsTests {
 
     @Test

@@ -17,15 +17,33 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+    dataflow:
+      registry:
+        populator:
+          locations: classpath:META-INF/applications.properties
 
-marathon:
-  includes: org.springframework.cloud:spring-cloud-marathon-connector:@spring.cloud.marathon.connector.version@
+---
+# Configuration options when using Kafka binder:
+  cloud:
+    deployer:
+      mesos:
+        marathon:
+          environmentVariables: 'SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=192.168.33.10:31000,SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=192.168.33.10:2181'
+
+# Configuration options when using RabbitMQ binder:
+#spring:
+#  cloud:
+#    deployer:
+#      mesos:
+#        marathon:
+#          environmentVariables: 'SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31193'
 
 # If you prefer to use Eureka to locate the Config Server, you can do that by setting
 # spring.cloud.config.discovery.enabled=true (default "false"). The net result of that is 
 # that client apps all need a bootstrap.yml (or an environment variable) with the Eureka 
 # server address, e.g. in eureka.client.serviceUrl.defaultZone
-#
+#---
+#spring:
 #  cloud:
 #     config:
 #        discovery:

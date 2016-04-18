@@ -13,14 +13,16 @@
 	</parent>
 	<properties>
 		<start-class>org.springframework.cloud.dataflow.server.mesos.MesosDataFlowServer</start-class>
-		<!-- The following marathon connector version property is inserted in dataflow-server.yml -->
-		<spring.cloud.marathon.connector.version>1.0.0.BUILD-SNAPSHOT</spring.cloud.marathon.connector.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-deployer-spi</artifactId>
+			<version>1.0.0.BUILD-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-dataflow-server-mesos</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -29,8 +31,10 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
+					<include>META-INF/*.properties</include>
+ 					<include>META-INF/spring.factories</include>
 					<include>dataflow-server.yml</include>
-				</includes>
+ 				</includes>
 			</resource>
 		</resources>
 		<plugins>

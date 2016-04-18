@@ -1,0 +1,17 @@
+{
+  "id": "rabbitmq",
+  "cpus": 1.0,
+  "mem": 512.0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "rabbitmq",
+      "name": "rabbitmq",
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 5672 }
+      ]
+    }
+  }
+}

@@ -17,14 +17,14 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+    dataflow:
+      registry:
+        populator:
+          locations: classpath:META-INF/applications.properties
 
 ---
 # Configuration options when using Kafka binder:
   cloud:
-    dataflow:
-      registry:
-        populator:
-          locations: classpath:META-INF/kafka-applications.properties
     deployer:
       mesos:
         marathon:
@@ -33,10 +33,6 @@ spring:
 # Configuration options when using RabbitMQ binder:
 #spring:
 #  cloud:
-#    dataflow:
-#      registry:
-#        populator:
-#          locations: classpath:META-INF/rabbit-applications.properties
 #    deployer:
 #      mesos:
 #        marathon:

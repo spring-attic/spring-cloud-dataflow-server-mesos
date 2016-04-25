@@ -21,7 +21,7 @@
 
 	<properties>
 		<spring-cloud-dataflow.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-dataflow.version>
-		<spring-cloud-mesos-deployer.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-mesos-deployer.version>
+		<spring-cloud-deployer-mesos.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-deployer-mesos.version>
 	</properties>
 
 	<dependencyManagement>
@@ -33,8 +33,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-mesos-deployer</artifactId>
-				<version>${spring-cloud-mesos-deployer.version}</version>
+				<artifactId>spring-cloud-deployer-mesos</artifactId>
+				<version>${spring-cloud-deployer-mesos.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>

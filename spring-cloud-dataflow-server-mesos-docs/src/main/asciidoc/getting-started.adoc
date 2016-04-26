@@ -10,17 +10,17 @@ The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting starte
 +
 The rest of this getting started guide assumes that you have a working Mesos and Marathon cluster and know the Marathon endpoint URL.
 +
-. Create a Redis service on the Mesos cluster.
+. Create a Rabbit MQ service on the Mesos cluster.
 +
-The redis service will be used for messaging between modules in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/redis.json[application JSON file for redis] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism of the deployed modules depends on finding an application with the name `redis`.  Depending on how large your cluster is, you way want to tweek the CPU and/or memory values.
+The `rabbitmq` service will be used for messaging between modules in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweek the CPU and/or memory values.
 +
-Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Redis application instance by issuing the following command
+Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
 +
 ```
-curl -X POST http://192.168.33.10:8080/v2/apps -d @redis.json -H "Content-type: application/json"
+curl -X POST http://192.168.33.10:8080/v2/apps -d @rabbitmq.json -H "Content-type: application/json"
 ```
 +
-Using the Marathon and Mesos UIs you can verify that redis is running on the cluster. Note the `@` symbol to reference a file and that the Marathon endpoint URL is `http://192.168.33.10:8080` based on the configuration used in the Advanced Mesos Course instructions.
+Note the `@` symbol to reference a file and that we are using the Marathon endpoint URL of `http://192.168.33.10:8080`. Your endpoint might be different based on the configuration used for your installation of Mesos and Marathon. Using the Marathon and Mesos UIs you can verify that `rabbitmq` service is running on the cluster.
 +
 . Run a local redis-server.
 +
@@ -30,32 +30,38 @@ $ redis-sever
 +
 This is used by the locally running Data Flow Server to store the state of available module versions for stream definitions.
 +
-NOTE: If you are switching between milestone and snapshot versions of the Data Flow Server, flush the redis keys that contain the module's version information.  Calling `flushdb` is indiscriminate but a handy way to start from a clean redis state.
-+
-. Download and run the Spring Cloud Data Flow Server for Mesos and Marathon.
+. Download the Spring Cloud Data Flow Server for Mesos and Marathon.
 +
 ```
-$ wget http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-server-mesos/1.0.0.BUILD-SNAPSHOT/spring-cloud-dataflow-server-mesos-1.0.0.BUILD-SNAPSHOT.jar
-
-$ java -jar spring-cloud-dataflow-server-mesos-1.0.0.BUILD-SNAPSHOT.jar --marathon.apiEndpoint=http://192.168.33.10:8080 --remoteRepositories=https://repo.spring.io/libs-milestone
+$ wget http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-server-mesos/1.0.0.M2/spring-cloud-dataflow-server-mesos-1.0.0.M2.jar
 ```
-+
-You can also pass in properties to set default values for memory and cpu resource request.  For example `--marathon.cpu=0.25` will by default allocate 25% of the CPU for the application vs. the default value of 50%.  You can see all the available options in the https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/spring-cloud-dataflow-server-mesos/src/main/java/org/springframework/cloud/dataflow/module/deployer/marathon/MarathonProperties.java[MarathonProperties.java] file.
-For the `remoteRepositories` property, you can provide a command deliminted list of values.  For example, if you want to expose modules that are published to your local maven repository you can run a small local web server to expose Maven's local repository directory
+. Using the Marathon GUI, look up the host and port for the `rabbitmq` application. In our case it was `192.168.33.10:31916`. For the deployed apps to be able to connect to Rabbit MQ we need to provide the following property when we start the server:
 +
 ```
-cd ~/.m2/repository
-python -m SimpleHTTPServer 8000
+--spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
 ```
 +
-Then use --remoteRepositories=https://repo.spring.io/libs-milestone,http://<YourHostIP>:8000 when launching the Data Flow Server.
+. Now, run the Spring Cloud Data Flow Server for Mesos and Marathon passing in this host/port configuration.
++
+```
+$ java -jar spring-cloud-dataflow-server-mesos-1.0.0.M2.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
+```
++
+You can pass in properties to set default values for memory and cpu resource request.  For example `--spring.cloud.deployer.mesos.marathon.memory=768` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/master/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
 +
 . Download and run the Spring Cloud Data Flow shell.
 +
 ```
-$ wget http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/1.0.0.BUILD-SNAPSHOT/spring-cloud-dataflow-shell-1.0.0.BUILD-SNAPSHOT.jar
+$ wget http://repo.spring.io/snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/1.0.0.M3/spring-cloud-dataflow-shell-1.0.0.M3.jar
 
-$ java -jar spring-cloud-dataflow-shell-1.0.0.BUILD-SNAPSHOT.jar
+$ java -jar spring-cloud-dataflow-shell-1.0.0.M3.jar
+```
++
+. Register the Rabbit MQ version of the `time` and `log` app modules using the shell
++
+```
+dataflow:>module register --type source --name time --uri docker:springcloudstream/time-source-rabbit
+dataflow:>module register --type sink --name log --uri docker:springcloudstream/log-sink-rabbit
 ```
 +
 . Deploy a simple stream in the shell
@@ -67,13 +73,19 @@ dataflow:>stream create --name ticktock --definition "time | log" --deploy
 In the Mesos UI you can then look at the logs for the log sink.
 +
 ```
-2015-12-29 06:27:29.702  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
-2015-12-29 06:27:29.776  INFO 1 --- [           main] o.s.c.s.module.log.LogSinkApplication    : Started LogSinkApplication in 169.9 seconds (JVM running for 239.813)
-2015-12-29 06:27:31.017  INFO 1 --- [hannel-adapter1] log.sink         : 2015-12-29 06:27:28
-2015-12-29 06:27:31.506  INFO 1 --- [hannel-adapter1] log.sink         : 2015-12-29 06:27:31
-2015-12-29 06:27:32.509  INFO 1 --- [hannel-adapter1] log.sink         : 2015-12-29 06:27:32
-2015-12-29 06:27:33.517  INFO 1 --- [hannel-adapter1] log.sink         : 2015-12-29 06:27:33
-2015-12-29 06:27:34.525  INFO 1 --- [hannel-adapter1] log.sink         : 2015-12-29 06:27:34
+2016-04-26 18:13:03.001  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+2016-04-26 18:13:03.004  INFO 1 --- [           main] o.s.c.s.a.l.s.r.LogSinkRabbitApplication : Started LogSinkRabbitApplication in 7.766 seconds (JVM running for 8.24)
+2016-04-26 18:13:54.443  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2016-04-26 18:13:54.445  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2016-04-26 18:13:54.459  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 14 ms
+2016-04-26 18:14:09.088  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:09
+2016-04-26 18:14:10.077  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:10
+2016-04-26 18:14:11.080  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:11
+2016-04-26 18:14:12.083  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:12
+2016-04-26 18:14:13.090  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:13
+2016-04-26 18:14:14.091  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:14
+2016-04-26 18:14:15.093  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:15
+2016-04-26 18:14:16.095  INFO 1 --- [time.ticktock-1] log.sink                                 : 04/26/16 18:14:16
 ```
 +
 . Destroy the stream

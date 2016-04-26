@@ -1,4 +1,4 @@
-= Spring Cloud Data Flow Admin for Mesos
+= Spring Cloud Data Flow Server for Mesos
 Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayaperumal Gopinathan, Gunnar Hillert, Mark Pollack, Patrick Peralta, Glenn Renfro, Gary Russell, Thomas Risberg, David Turanski, Janne Valkealahti
 :doctype: book
 :toc:
@@ -37,7 +37,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :propdeps-plugin: https://github.com/spring-projects/gradle-plugins/tree/master/propdeps-plugin
 :ant-manual: http://ant.apache.org/manual
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc
-:scsm-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-stream-modules/master/spring-cloud-stream-modules-docs/src/main/asciidoc
+:scstas-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-stream-app-starters/master/spring-cloud-stream-app-starters-docs/src/main/asciidoc
 :attributes: allow-uri-read
 // ======================================================================================
 

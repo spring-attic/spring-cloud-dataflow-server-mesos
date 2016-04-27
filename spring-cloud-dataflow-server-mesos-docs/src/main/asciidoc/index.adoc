@@ -47,8 +47,6 @@ include::overview.adoc[]
 
 include::getting-started.adoc[]
 
-include::modules.adoc[]
-
 include::appendix.adoc[]
 
 

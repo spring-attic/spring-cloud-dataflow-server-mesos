@@ -21,16 +21,11 @@
 
 	<properties>
 		<spring-cloud-dataflow.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-dataflow.version>
-		<spring-cloud-deployer-mesos.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-deployer-mesos.version>
+		<spring-cloud-deployer-mesos.version>1.0.0.M1</spring-cloud-deployer-mesos.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-dataflow-server-mesos</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-deployer-mesos</artifactId>

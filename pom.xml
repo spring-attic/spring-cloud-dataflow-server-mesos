@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-dataflow-parent</artifactId>
-		<version>1.0.0.M3</version>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
 		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 
@@ -20,7 +20,7 @@
 	</modules>
 
 	<properties>
-		<spring-cloud-dataflow.version>1.0.0.M3</spring-cloud-dataflow.version>
+		<spring-cloud-dataflow.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-dataflow.version>
 		<spring-cloud-deployer-mesos.version>1.0.0.M1</spring-cloud-deployer-mesos.version>
 	</properties>
 

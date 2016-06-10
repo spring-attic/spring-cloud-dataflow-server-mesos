@@ -17,9 +17,13 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+    dataflow:
+      features:
+        tasksEnabled: false
 
 ---
 # Configuration options when using Kafka binder:
+spring:
   cloud:
     deployer:
       mesos:

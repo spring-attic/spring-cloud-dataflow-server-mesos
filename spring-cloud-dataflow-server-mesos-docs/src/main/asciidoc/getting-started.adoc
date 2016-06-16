@@ -2,7 +2,7 @@
 
 == Deploying Streams on Mesos and Marathon
 
-In this getting started guide, the Data Flow Server is run as a standalone application outside the Mesos cluster.  This also requires running a local instance of Redis to store available modules.  A future version will provide support for the Data Flow Server itself to run on Mesos.
+In this getting started guide, the Data Flow Server is run as a standalone application outside the Mesos cluster. A future version will provide support for the Data Flow Server itself to run on Mesos.
 
 . Deploy a Mesos and Marathon cluster.
 +
@@ -12,7 +12,7 @@ The rest of this getting started guide assumes that you have a working Mesos and
 +
 . Create a Rabbit MQ service on the Mesos cluster.
 +
-The `rabbitmq` service will be used for messaging between modules in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweek the CPU and/or memory values.
+The `rabbitmq` service will be used for messaging between applications in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweek the CPU and/or memory values.
 +
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
 +
@@ -28,7 +28,7 @@ Note the `@` symbol to reference a file and that we are using the Marathon endpo
 $ redis-sever
 ```
 +
-This is used by the locally running Data Flow Server to store the state of available module versions for stream definitions.
+This is used by the locally running Data Flow Server to store the state of available application versions for stream definitions.
 +
 . Download the Spring Cloud Data Flow Server for Mesos and Marathon.
 +
@@ -52,16 +52,15 @@ You can pass in properties to set default values for memory and cpu resource req
 . Download and run the Spring Cloud Data Flow shell.
 +
 ```
-$ wget http://repo.spring.io/milestone/org/springframework/cloud/spring-cloud-dataflow-shell/1.0.0.M3/spring-cloud-dataflow-shell-1.0.0.M3.jar
+$ wget http://repo.spring.io/milestone/org/springframework/cloud/spring-cloud-dataflow-shell/1.0.0.M3/spring-cloud-dataflow-shell-1.0.0.RC1.jar
 
-$ java -jar spring-cloud-dataflow-shell-1.0.0.M3.jar
+$ java -jar spring-cloud-dataflow-shell-1.0.0.RC1.jar
 ```
 +
-. Register the Rabbit MQ version of the `time` and `log` app modules using the shell
+. By default, the application registry will be empty. If you would like to register all out-of-the-box stream applications built with the RabbitMQ binder in bulk, you can with the following command. For more details, review how to <<streams.adoc#spring-cloud-dataflow-register-apps, register applications>>.
 +
 ```
-dataflow:>module register --type source --name time --uri docker:springcloudstream/time-source-rabbit
-dataflow:>module register --type sink --name log --uri docker:springcloudstream/log-sink-rabbit
+dataflow:>app import --uri http://bit.ly/stream-applications-rabbit-docker
 ```
 +
 . Deploy a simple stream in the shell

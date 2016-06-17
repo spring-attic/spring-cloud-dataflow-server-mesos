@@ -84,6 +84,7 @@ In the Mesos UI you can then look at the logs for the log sink.
 ```
 +
 . Destroy the stream
++
 ```
 dataflow:>stream destroy --name ticktock
 ```

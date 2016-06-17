@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>spring-cloud-dataflow-server-mesos-docs</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.RC1</version>
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-dataflow-server-mesos-parent</artifactId>
-		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<version>1.0.0.RC1</version>
 	</parent>
 	<name>spring-cloud-dataflow-server-mesos-docs</name>
 	<description>Spring Cloud Data Flow Admin Mesos</description>
@@ -90,7 +90,7 @@
 						<version>2.0.15</version>
 						<configuration>
 							<sourceDirectory>${basedir}/target/generated-docs</sourceDirectory>
-							<imgSrcPath></imgSrcPath>
+							<imgSrcPath />
 							<graphicsize.extension>0</graphicsize.extension>
 							<includes>index.xml</includes>
 							<xincludeSupported>true</xincludeSupported>
@@ -102,7 +102,7 @@
 							<highlightXslthlConfig>${basedir}/src/main/docbook/xsl/xslthl-config.xml</highlightXslthlConfig>
 							<preProcess>
 								<copy todir="${basedir}/target/generated-docs/images">
-									<fileset dir="${basedir}/src/main/docbook/images"/>
+									<fileset dir="${basedir}/src/main/docbook/images" />
 								</copy>
 							</preProcess>
 						</configuration>
@@ -138,10 +138,10 @@
 											</fileset>
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/htmlsingle/images">
-										        <fileset dir="${basedir}/target/generated-docs/images"/>
+										        <fileset dir="${basedir}/target/generated-docs/images" />
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/htmlsingle/css">
-											<fileset dir="${basedir}/src/main/docbook/css"/>
+											<fileset dir="${basedir}/src/main/docbook/css" />
 										</copy>
 									</postProcess>
 								</configuration>
@@ -163,10 +163,10 @@
 											</fileset>
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/html/images">
-											<fileset dir="${basedir}/target/generated-docs/images"/>
+											<fileset dir="${basedir}/target/generated-docs/images" />
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/html/css">
-											<fileset dir="${basedir}/src/main/docbook/css"/>
+											<fileset dir="${basedir}/src/main/docbook/css" />
 										</copy>
 									</postProcess>
 								</configuration>
@@ -202,8 +202,8 @@
 									<targetDirectory>${basedir}/target/docbook/epub</targetDirectory>
 									<preProcess>
 										<copy todir="${basedir}/target/docbook/epub/images">
-											<fileset dir="${basedir}/src/main/docbook/images"/>
-											<fileset dir="${basedir}/src/main/asciidoc/images"/>
+											<fileset dir="${basedir}/src/main/docbook/images" />
+											<fileset dir="${basedir}/src/main/asciidoc/images" />
 										</copy>
 									</preProcess>
 									<postProcess>

@@ -32,9 +32,10 @@ This is used by the locally running Data Flow Server to store the state of avail
 +
 . Download the Spring Cloud Data Flow Server for Mesos and Marathon.
 +
-```
-$ wget http://repo.spring.io/milestone/org/springframework/cloud/spring-cloud-dataflow-server-mesos/1.0.0.M2/spring-cloud-dataflow-server-mesos-1.0.0.M2.jar
-```
+[source,subs="attributes"]
+----
+$ wget {spring-repo}/org/springframework/cloud/spring-cloud-dataflow-server-mesos/{server-repo-version}/spring-cloud-dataflow-server-mesos-{server-repo-version}.jar
+----
 . Using the Marathon GUI, look up the host and port for the `rabbitmq` application. In our case it was `192.168.33.10:31916`. For the deployed apps to be able to connect to Rabbit MQ we need to provide the following property when we start the server:
 +
 ```
@@ -44,18 +45,19 @@ $ wget http://repo.spring.io/milestone/org/springframework/cloud/spring-cloud-da
 . Now, run the Spring Cloud Data Flow Server for Mesos and Marathon passing in this host/port configuration.
 +
 ```
-$ java -jar spring-cloud-dataflow-server-mesos-1.0.0.M2.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
+$ java -jar spring-cloud-dataflow-server-mesos-{server-repo-version}.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
 ```
 +
 You can pass in properties to set default values for memory and cpu resource request.  For example `--spring.cloud.deployer.mesos.marathon.memory=768` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/master/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
 +
 . Download and run the Spring Cloud Data Flow shell.
 +
-```
-$ wget http://repo.spring.io/milestone/org/springframework/cloud/spring-cloud-dataflow-shell/1.0.0.M3/spring-cloud-dataflow-shell-1.0.0.RC1.jar
+[source,subs="attributes"]
+----
+$ wget {spring-repo}/org/springframework/cloud/spring-cloud-dataflow-shell/{shell-repo-version}/spring-cloud-dataflow-shell-{shell-repo-version}.jar
 
-$ java -jar spring-cloud-dataflow-shell-1.0.0.RC1.jar
-```
+$ java -jar spring-cloud-dataflow-shell-{shell-repo-version}.jar
+----
 +
 . By default, the application registry will be empty. If you would like to register all out-of-the-box stream applications built with the RabbitMQ binder in bulk, you can with the following command. For more details, review how to <<streams.adoc#spring-cloud-dataflow-register-apps, register applications>>.
 +
@@ -64,6 +66,8 @@ dataflow:>app import --uri http://bit.ly/stream-applications-rabbit-docker
 ```
 +
 . Deploy a simple stream in the shell
++
+NOTE: If you need to specify any of the app specific configuration properties then you must use "long-form" of them including the app specific prefix like `--jdbc.tableName=TEST_DATA`. This is due to the server not being able to access the metadata for the Docker based starter apps. You will also not see the configuration properties listed when using the `app info` command or in the Dashboard GUI.
 +
 ```
 dataflow:>stream create --name ticktock --definition "time | log" --deploy

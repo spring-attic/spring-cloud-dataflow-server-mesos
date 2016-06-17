@@ -22,14 +22,6 @@ curl -X POST http://192.168.33.10:8080/v2/apps -d @rabbitmq.json -H "Content-typ
 +
 Note the `@` symbol to reference a file and that we are using the Marathon endpoint URL of `http://192.168.33.10:8080`. Your endpoint might be different based on the configuration used for your installation of Mesos and Marathon. Using the Marathon and Mesos UIs you can verify that `rabbitmq` service is running on the cluster.
 +
-. Run a local redis-server.
-+
-```
-$ redis-sever
-```
-+
-This is used by the locally running Data Flow Server to store the state of available application versions for stream definitions.
-+
 . Download the Spring Cloud Data Flow Server for Mesos and Marathon.
 +
 [source,subs="attributes"]

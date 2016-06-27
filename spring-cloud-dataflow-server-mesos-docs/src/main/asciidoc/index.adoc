@@ -9,15 +9,12 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :hide-uri-scheme:
 
 // Since the core projects will be at different release cadences, the following tokens need changed at the time of every release
-:scdf-core-version: 1.0.0.RC1
+:scdf-core-version: {spring-cloud-dataflow.version}
 :scst-core-version: 1.0.2.RELEASE
 :sct-core-version: 1.0.0.RC1
 :scst-starters-core-version: current-SNAPSHOT
 :sct-starters-core-version: current-SNAPSHOT
 
-:spring-cloud-dataflow-docs: http://docs.spring.io/spring-cloud-dataflow/docs/{scdf-core-version}/reference
-:github-repo: spring-cloud/spring-cloud-dataflow-server-mesos
-:github-code: http://github.com/{github-repo}
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc
 
 // ======================================================================================

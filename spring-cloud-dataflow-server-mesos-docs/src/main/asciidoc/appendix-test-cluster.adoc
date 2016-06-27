@@ -1,4 +1,3 @@
-:numbered!:
 [appendix]
 [[test-cluster]]
 

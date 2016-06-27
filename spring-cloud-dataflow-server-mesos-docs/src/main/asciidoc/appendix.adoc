@@ -1,6 +1,7 @@
 [[appendix]]
 = Appendices
 
+include::{dataflow-asciidoc}/appendix-migration-guide.adoc[]
 include::appendix-test-cluster.adoc[]
 include::{dataflow-asciidoc}/appendix-building.adoc[]
 include::{dataflow-asciidoc}/appendix-contributing.adoc[]

@@ -26,7 +26,7 @@ Note the `@` symbol to reference a file and that we are using the Marathon endpo
 +
 [source,subs="attributes"]
 ----
-$ wget {spring-repo}/org/springframework/cloud/spring-cloud-dataflow-server-mesos/{server-repo-version}/spring-cloud-dataflow-server-mesos-{server-repo-version}.jar
+$ wget http://repo.spring.io/{version-type-lowercase}/org/springframework/cloud/spring-cloud-dataflow-server-mesos/{project-version}/spring-cloud-dataflow-server-mesos-{project-version}.jar
 ----
 . Using the Marathon GUI, look up the host and port for the `rabbitmq` application. In our case it was `192.168.33.10:31916`. For the deployed apps to be able to connect to Rabbit MQ we need to provide the following property when we start the server:
 +
@@ -38,7 +38,7 @@ $ wget {spring-repo}/org/springframework/cloud/spring-cloud-dataflow-server-meso
 +
 [source,subs="attributes"]
 ----
-$ java -jar spring-cloud-dataflow-server-mesos-{server-repo-version}.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
+$ java -jar spring-cloud-dataflow-server-mesos-{project-version}.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
 ----
 +
 You can pass in properties to set default values for memory and cpu resource request.  For example `--spring.cloud.deployer.mesos.marathon.memory=768` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/master/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
@@ -47,9 +47,9 @@ You can pass in properties to set default values for memory and cpu resource req
 +
 [source,subs="attributes"]
 ----
-$ wget {spring-repo}/org/springframework/cloud/spring-cloud-dataflow-shell/{shell-repo-version}/spring-cloud-dataflow-shell-{shell-repo-version}.jar
+$ wget http://repo.spring.io/{dataflow-version-type-lowercase}/org/springframework/cloud/spring-cloud-dataflow-shell/{dataflow-project-version}/spring-cloud-dataflow-shell-{dataflow-project-version}.jar
 
-$ java -jar spring-cloud-dataflow-shell-{shell-repo-version}.jar
+$ java -jar spring-cloud-dataflow-shell-{dataflow-project-version}.jar
 ----
 +
 . By default, the application registry will be empty. If you would like to register all out-of-the-box stream applications built with the RabbitMQ binder in bulk, you can with the following command. For more details, review how to <<streams.adoc#spring-cloud-dataflow-register-apps, register applications>>.

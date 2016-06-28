@@ -9,7 +9,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :hide-uri-scheme:
 
 // Since the core projects will be at different release cadences, the following tokens need changed at the time of every release
-:scdf-core-version: {spring-cloud-dataflow.version}
+:scdf-core-version: {dataflow-project-version}
 :scst-core-version: 1.0.2.RELEASE
 :sct-core-version: 1.0.0.RC1
 :scst-starters-core-version: current-SNAPSHOT

@@ -6,7 +6,7 @@ In this getting started guide, the Data Flow Server is run as a standalone appli
 
 . Deploy a Mesos and Marathon cluster.
 +
-The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting started guide] provides a number of options for you to deploy a cluster.  Many of the options listed there need some additional work to get going.  For example, many Vagrant provisioned VMs are using deprecated versions of the Docker client.  We have included some brief instructions for setting up a single-node cluster with Vagrant in <<test-cluster>>. In addition to this we have also used the https://github.com/mesosphere/playa-mesos[Playa Mesos] Vagrant setup. For those that want to setup a distributed cluster quickly, there is also an option to spin up a cluster on AWS using https://mesosphere.com/amazon/[Mesosphere's Datacenter Operation System on Amazon Web Services].  
+The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting started guide] provides a number of options for you to deploy a cluster. There is also a number of options listed on Mesosphere's https://dcos.io/install/[Install DC/OS] page. In the link:appendix-test-cluster.adoc[Test Cluster] appendix we describe how we configured a local test cluster using the DC/OS Vagrant project.
 +
 The rest of this getting started guide assumes that you have a working Mesos and Marathon cluster and know the Marathon endpoint URL.
 +

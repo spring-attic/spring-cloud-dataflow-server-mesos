@@ -2,100 +2,46 @@
 [[test-cluster]]
 
 == Test Cluster
-Here are brief setup instructions for setting up a local Vagrant single-node cluster. The Mesos endpoint will be http://192.168.33.10:5050 and the Marathon endpoint will be http://192.168.33.10:8080.
+Here are brief setup instructions for setting up a local Vagrant DC/OS Mesos cluster. The Mesos endpoint will be http://m1.dcos, the Marathon endpoint will be http://m1.dcos/service/marathon and the Chronos endpoint will be http://m1.dcos/service/chronos.
 
-=== Create Vagrant file with 64-bit Ubuntu
+Detailed installation instructions are here: https://github.com/dcos/dcos-vagrant
 
-First create the `Vagrant` file with necessary customizations:
+=== Clone and Download files
 
-----
-$ vi Vagrantfile
-----
+First clone the `dcos-vagrant` project:
 
-Add the following content and save the file:
+    git clone https://github.com/dcos/dcos-vagrant.git
 
-----
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+Download the DC/OS version you want to use, we used version 1.7.0 from https://dcos.io/releases/1.7.0/, and place this `dcos_generate_config.sh` file in the root directory of the cloned `dcos-project`.
 
-Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/trusty64"
+Copy the config example file. From the root directory of the `dcos-vagrant` project execute:
 
-  config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.hostname = "mesos"
+    cp VagrantConfig.yaml.example VagrantConfig.yaml
 
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = "4096"
-    vb.cpus = 4
-  end
+Update the `etc/config-1.7.yaml` file. Add a line with 
 
-end
-----
+`oauth_enabled: 'false'` 
 
-Next, update the box to the latest version and start it:
+to the end of this file and save it. This will disable any security for the cluster.
 
-----
-$ vagrant box update
-$ vagrant up
-----
+=== Start Vagrant VMs for the Mesos cluster
 
-=== Install Mesos, Marathon and Docker
+You need to install Vagrant and VirtualBox. We used the DC/OS version 1.7.0 with Vagrant version 1.8.4. 
 
-We can now ssh to the instance to install the necessary bits:
+Install Vagrant Host Manager Plugin if it isn't already installed:
 
-----
-$ vagrant ssh
-----
+    vagrant plugin install vagrant-hostmanager
 
-The rest of these instructions are run from within this ssh shell.
+Now we are ready to start the Vagrant VMs. You can select different cluster configurations depending on your needs. We have tested using a single master, three private agents and one bootstrap node using this command:
 
-. Refresh the apt repo and install Docker:
-+
-----
-vagrant@mesos:~$ sudo apt-get -y update
-vagrant@mesos:~$ wget -qO- https://get.docker.com/ | sh
-vagrant@mesos:~$ sudo usermod -aG docker vagrant
-----
-+
-. Install needed repos:
-+
-----
-vagrant@mesos:~$ echo "deb http://repos.mesosphere.io/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mesosphere.list
-vagrant@mesos:~$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
-vagrant@mesos:~$ sudo add-apt-repository ppa:webupd8team/java -y
-vagrant@mesos:~$ sudo apt-get -y update
-----
-+
-. Install Java:
-+
-----
-vagrant@mesos:~$ sudo apt-get install oracle-java8-installer
-----
-+
-. Install Mesos and Marathon:
-+
-----
-vagrant@mesos:~$ sudo apt-get -y install mesos marathon
-----
-+
-. Add Docker as a containerizer:
-+
-----
-vagrant@mesos:~$ echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
-----
-+
-. Set the IP address as the hostname used for the slave:
-+
-----
-vagrant@mesos:~$ echo $(/sbin/ifconfig eth1 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}') | sudo tee /etc/mesos-slave/hostname
-----
-+
-. Reboot the server
-+
-----
-vagrant@mesos:~$ sudo reboot
-----
+    vagrant up m1 a1 a2 a3 boot
 
+When you are done with the Mesos cluster you can destroy it using:
 
+    vagrant destroy -f
 
+=== Install Chronos as a Service running in Marathon 
 
+You can install Chronos by using the following `dcos` command. This requires that you install the  https://docs.mesosphere.com/1.7/usage/cli/install/[DC/OS CLI].
+
+    dcos package install chronos

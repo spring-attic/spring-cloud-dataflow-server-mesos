@@ -1,0 +1,47 @@
+{
+  "id": "/mysql",
+  "cpus": 1,
+  "mem": 512,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "containerPath": "mysqldata",
+        "mode": "RW",
+        "persistent": {
+          "size": 1000
+        }
+      },
+      {
+        "containerPath": "/var/lib/mysql",
+        "hostPath": "mysqldata",
+        "mode": "RW"
+      }
+    ],
+    "docker": {
+      "image": "mysql",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 3306,
+          "hostPort": 0,
+          "servicePort": 10000,
+          "protocol": "tcp"
+        }
+      ],
+      "forcePullImage": false
+    }
+  },
+  "env": {
+    "MYSQL_USER": "spring",
+    "MYSQL_PASSWORD": "secret",
+    "MYSQL_ROOT_PASSWORD": "supersecret",
+    "MYSQL_DATABASE": "test"
+  },
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 0,
+    "maximumOverCapacity": 0
+  }
+}

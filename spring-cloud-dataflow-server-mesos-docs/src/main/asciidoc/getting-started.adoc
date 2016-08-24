@@ -1,6 +1,6 @@
 = Getting Started
 
-== Deploying Streams on Mesos and Marathon
+== Deploying Streams and Tasks on Mesos and Marathon/Chronos
 
 In this getting started guide, the Data Flow Server is run as a standalone application outside the Mesos cluster. A future version will provide support for the Data Flow Server itself to run on Mesos.
 
@@ -10,17 +10,39 @@ The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting starte
 +
 The rest of this getting started guide assumes that you have a working Mesos and Marathon cluster and know the Marathon endpoint URL.
 +
-. Create a Rabbit MQ service on the Mesos cluster.
+We are using the Marathon endpoint URL of http://m1.dcos/service/marathon[http://m1.dcos/service/marathon] for this document. 
 +
-The `rabbitmq` service will be used for messaging between applications in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweek the CPU and/or memory values.
+. Create a MySQL service on the Mesos cluster.
++
+The `mysql` service will be used for storing stream and task definitions in the stream and task respoitories.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/mysql.json[application JSON file for MySQL] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweak the CPU and/or memory values.
 +
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
 +
 ```
-curl -X POST http://192.168.33.10:8080/v2/apps -d @rabbitmq.json -H "Content-type: application/json"
+curl -X POST http://m1.dcos/service/marathon/v2/apps -d @mysql.json -H "Content-type: application/json"
 ```
 +
-Note the `@` symbol to reference a file and that we are using the Marathon endpoint URL of `http://192.168.33.10:8080`. Your endpoint might be different based on the configuration used for your installation of Mesos and Marathon. Using the Marathon and Mesos UIs you can verify that `rabbitmq` service is running on the cluster.
+NOTE:  Note the `@` symbol to reference a file input for the `curl` command.
++
+. Create a Rabbit MQ service on the Mesos cluster.
++
+The `rabbitmq` service will be used for messaging between applications in the stream.  There is a sample https://github.com/spring-cloud/spring-cloud-dataflow-server-mesos/blob/master/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you way want to tweak the CPU and/or memory values.
++
+Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
++
+```
+curl -X POST http://m1.dcos/service/marathon/v2/apps -d @rabbitmq.json -H "Content-type: application/json"
+```
++
+Using the Marathon and Mesos UIs you can verify that `mysql` and `rabbitmq` services are running on the cluster.
++
+. Install Chronos on the Mesos cluster.
++
+The https://mesos.github.io/chronos/[Chronos] service will be used for running task. You can deploy Chronos using the DC/OS UI (under Universe section) or from the `dcos` command line:
++
+```
+dcos package install chronos
+```
 +
 . Download the Spring Cloud Data Flow Server for Mesos and Marathon.
 +
@@ -28,17 +50,35 @@ Note the `@` symbol to reference a file and that we are using the Marathon endpo
 ----
 $ wget http://repo.spring.io/{version-type-lowercase}/org/springframework/cloud/spring-cloud-dataflow-server-mesos/{project-version}/spring-cloud-dataflow-server-mesos-{project-version}.jar
 ----
-. Using the Marathon GUI, look up the host and port for the `rabbitmq` application. In our case it was `192.168.33.10:31916`. For the deployed apps to be able to connect to Rabbit MQ we need to provide the following property when we start the server:
+. Using the Marathon GUI, look up the host and port for the `mysql` service which in our case was `192.168.65.111:5769`. Also look up the host and port for the `rabbitmq` service. In our case it was `192.168.65.121:5261`.  
++
+We need to provide the endpoints for Marathon and Chronos. We do that by providing the following properties:
 +
 ```
---spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
+--spring.cloud.deployer.mesos.marathon.apiEndpoint=http://m1.dcos/service/marathon
+--spring.cloud.deployer.mesos.chronos.apiEndpoint=http://m1.dcos/service/chronos
 ```
 +
-. Now, run the Spring Cloud Data Flow Server for Mesos and Marathon passing in this host/port configuration.
+In order for the server to connect to the stream and task repositories running on MySQL we need to provide the following properties:
++
+```
+--spring.datasource.url=jdbc:mysql://192.168.65.111:5769/test
+--spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+--spring.datasource.username=spring
+--spring.datasource.password=secret
+```
++
+For the deployed apps to be able to connect to Rabbit MQ we need to provide the following property when we start the server:
++
+```
+--spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.65.121,SPRING_RABBITMQ_PORT=5261'
+```
++
+. Now, run the Spring Cloud Data Flow Server for Mesos and Marathon/Chronos passing in the above specified properties.
 +
 [source,subs="attributes"]
 ----
-$ java -jar spring-cloud-dataflow-server-mesos-{project-version}.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://192.168.33.10:8080 --spring.cloud.deployer.mesos.marathon.memory=768 --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.33.10,SPRING_RABBITMQ_PORT=31916'
+$ java -jar spring-cloud-dataflow-server-mesos-{project-version}.jar --spring.cloud.deployer.mesos.marathon.apiEndpoint=http://m1.dcos/service/marathon --spring.cloud.deployer.mesos.chronos.apiEndpoint=http://m1.dcos/service/chronos --spring.datasource.url=jdbc:mysql://192.168.65.111:5769/test --spring.datasource.driverClassName=org.mariadb.jdbc.Driver --spring.datasource.username=spring --spring.datasource.password=secret --spring.cloud.deployer.mesos.marathon.environmentVariables='SPRING_RABBITMQ_HOST=192.168.65.121,SPRING_RABBITMQ_PORT=5261'
 ----
 +
 You can pass in properties to set default values for memory and cpu resource request.  For example `--spring.cloud.deployer.mesos.marathon.memory=768` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/master/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
@@ -88,4 +128,50 @@ In the Mesos UI you can then look at the logs for the log sink.
 +
 ```
 dataflow:>stream destroy --name ticktock
+```
++
+. Register a task application using the shell
++
+```
+dataflow:>app register --name timestamp --type task --uri docker:springcloudtask/timestamp-task:latest
+```
++
+. Create and launch the task using the shell
++
+```
+dataflow:>task create testtask --definition "timestamp"
+dataflow:>task launch testtask
+```
++
+In the Mesos UI you can then look at the logs for the `testtask` task.
++
+```
+Starting task ct:1472062219364:0:testtask:
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.3.5.RELEASE)
+
+2016-08-24 18:10:45.957  INFO 1 --- [           main] o.s.c.t.a.t.TimestampTaskApplication     : Starting TimestampTaskApplication v1.0.2.BUILD-SNAPSHOT on a2.dcos with PID 1 (/maven/timestamp-task.jar started by root in /)
+2016-08-24 18:10:45.960  INFO 1 --- [           main] o.s.c.t.a.t.TimestampTaskApplication     : No active profile set, falling back to default profiles: default
+2016-08-24 18:10:46.003  INFO 1 --- [           main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@788c6159: startup date [Wed Aug 24 18:10:46 GMT 2016]; root of context hierarchy
+2016-08-24 18:10:47.051  INFO 1 --- [           main] o.s.jdbc.datasource.init.ScriptUtils     : Executing SQL script from class path resource [org/springframework/cloud/task/schema-mysql.sql]
+2016-08-24 18:10:47.062  INFO 1 --- [           main] o.s.jdbc.datasource.init.ScriptUtils     : Executed SQL script from class path resource [org/springframework/cloud/task/schema-mysql.sql] in 11 ms.
+2016-08-24 18:10:47.207  INFO 1 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2016-08-24 18:10:47.211  INFO 1 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Starting beans in phase 0
+2016-08-24 18:10:47.238  INFO 1 --- [           main] TimestampTaskConfiguration$TimestampTask : 2016-08-24 18:10:47.238
+2016-08-24 18:10:47.249  INFO 1 --- [           main] s.c.a.AnnotationConfigApplicationContext : Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@788c6159: startup date [Wed Aug 24 18:10:46 GMT 2016]; root of context hierarchy
+2016-08-24 18:10:47.250  INFO 1 --- [           main] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2016-08-24 18:10:47.252  INFO 1 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2016-08-24 18:10:47.261  INFO 1 --- [           main] o.s.c.t.a.t.TimestampTaskApplication     : Started TimestampTaskApplication in 1.62 seconds (JVM running for 2.018)```
+```
++
+. Destroy the task
++
+```
+dataflow:>task destroy --name testtask
 ```

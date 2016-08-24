@@ -19,7 +19,7 @@ spring:
       uri: http://localhost:8888
     dataflow:
       features:
-        tasksEnabled: false
+        tasksEnabled: true
 
 ---
 # Configuration options when using Kafka binder:

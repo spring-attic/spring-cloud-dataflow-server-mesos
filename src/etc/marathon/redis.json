@@ -1,5 +1,5 @@
 {
-  "id": "redis",
+  "id": "/redis",
   "cpus": 0.5,
   "mem": 64.0,
   "instances": 1,

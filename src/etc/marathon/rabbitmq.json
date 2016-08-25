@@ -1,5 +1,5 @@
 {
-  "id": "rabbitmq",
+  "id": "/rabbitmq",
   "cpus": 1.0,
   "mem": 512.0,
   "instances": 1,

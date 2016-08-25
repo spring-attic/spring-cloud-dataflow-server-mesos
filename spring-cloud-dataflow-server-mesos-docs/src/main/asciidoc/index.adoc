@@ -16,6 +16,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :sct-starters-core-version: current-SNAPSHOT
 
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc
+:git-tag: master
 
 // ======================================================================================
 

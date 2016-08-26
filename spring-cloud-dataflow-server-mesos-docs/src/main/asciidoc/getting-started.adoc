@@ -63,11 +63,18 @@ Use the following command to download the Marathon application JSON file used to
 $ wget https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-tag}/src/etc/marathon/scdf-server.json
 ----
 +
-We will need to modify URLs and host and port settings based on the current deployment environment. We hope to eliminiate most of this in future releases and instead rely on service discovery mechanisms. For now we do have to make the modifications manually. The downloaded file should look like this:
+We will need to modify the Docker image tag, API endpoints and host and port settings based on the current deployment environment. We hope to eliminiate most of this in future releases and instead rely on service discovery mechanisms. For now we do have to make the modifications manually. The downloaded file should look like this:
 +
 [source,subs="attributes"]
 ----
 include::../../../../src/etc/marathon/scdf-server.json[]
+----
++
+First we need to modify the Docker image to use the tag `{docker-tag}`. It should be:
++
+[source,subs="attributes"]
+----
+    "image": "springcloud/spring-cloud-dataflow-server-mesos:{docker-tag}",
 ----
 +
 In the `env` section there are several environment variables that we need to adjust. We need to provide the following properties for accessing Marathon and Chronos APIs:

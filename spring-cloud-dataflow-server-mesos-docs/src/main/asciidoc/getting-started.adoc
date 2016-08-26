@@ -48,7 +48,7 @@ Using the Marathon and Mesos UIs you can verify that `mysql`, `rabbitmq` and `re
 +
 . Install Chronos on the Mesos cluster.
 +
-The https://mesos.github.io/chronos/[Chronos] service will be used for running task. You can deploy Chronos using the DC/OS UI (under Universe section) or from the `dcos` command line:
+The https://mesos.github.io/chronos/[Chronos] service will be used for running task. If you haven't already installed Chronos, this is the time to do it. You can install Chronos using the DC/OS UI (under the Universe section) or from the `dcos` command line:
 +
 ```
 dcos package install chronos
@@ -144,7 +144,7 @@ NOTE: If you need to specify any of the app specific configuration properties th
 dataflow:>stream create --name ticktock --definition "time | log" --deploy
 ```
 +
-In the Mesos UI you can then look at the logs for the log sink.
+In the Mesos UI you can then look at the logs for the log sink. Look for a Mesos task with the name `log-0.log.ticktock`.
 +
 ```
 2016-04-26 18:13:03.001  INFO 1 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
@@ -181,7 +181,7 @@ dataflow:>task create testtask --definition "timestamp"
 dataflow:>task launch testtask
 ```
 +
-In the Mesos UI you can then look at the logs for the `testtask` task.
+In the Mesos UI you can then look at the logs for the `testtask` task. Look for a Mesos task with  the name `ChronosTask:testtask`.
 +
 ```
 Starting task ct:1472062219364:0:testtask:

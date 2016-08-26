@@ -2,9 +2,9 @@
 [[test-cluster]]
 
 == Test Cluster
-Here are brief setup instructions for setting up a local Vagrant DC/OS Mesos cluster. The Mesos endpoint will be http://m1.dcos, the Marathon endpoint will be http://m1.dcos/service/marathon and the Chronos endpoint will be http://m1.dcos/service/chronos.
+Here are brief setup instructions for setting up a local Vagrant DC/OS Mesos cluster. The DC/OS Dashboard endpoint will be http://m1.dcos[http://m1.dcos], the Mesos endpoint will be http://m1.dcos/mesos[http://m1.dcos/mesos], the Marathon endpoint will be http://m1.dcos/marathon[http://m1.dcos/marathon] and the Chronos endpoint will be http://m1.dcos/service/chronos[http://m1.dcos/service/chronos].
 
-Detailed installation instructions are here: https://github.com/dcos/dcos-vagrant
+Detailed installation instructions are here: https://github.com/dcos/dcos-vagrant[https://github.com/dcos/dcos-vagrant]
 
 === Clone and Download files
 
@@ -12,13 +12,13 @@ First clone the `dcos-vagrant` project:
 
     git clone https://github.com/dcos/dcos-vagrant.git
 
-Download the DC/OS version you want to use, we used version 1.7.0 from https://dcos.io/releases/1.7.0/, and place this `dcos_generate_config.sh` file in the root directory of the cloned `dcos-project`.
+Download the DC/OS version you want to use, we used version 1.8.1 from https://dcos.io/releases/1.8.1/[https://dcos.io/releases/1.8.1/], and place this `dcos_generate_config.sh` file in the root directory of the cloned `dcos-project`.
 
 Copy the config example file. From the root directory of the `dcos-vagrant` project execute:
 
     cp VagrantConfig.yaml.example VagrantConfig.yaml
 
-Update the `etc/config-1.7.yaml` file. Add a line with 
+Update the `etc/config-1.8.yaml` file. Add a line with 
 
 `oauth_enabled: 'false'` 
 
@@ -26,11 +26,15 @@ to the end of this file and save it. This will disable any security for the clus
 
 === Start Vagrant VMs for the Mesos cluster
 
-You need to install Vagrant and VirtualBox. We used the DC/OS version 1.7.0 with Vagrant version 1.8.4. 
+You need to install Vagrant and VirtualBox. We used the DC/OS version 1.8.1 with Vagrant version 1.8.4. 
 
 Install Vagrant Host Manager Plugin if it isn't already installed:
 
     vagrant plugin install vagrant-hostmanager
+
+Before we start the cluster we should define the config file we want to use:
+
+    export DCOS_CONFIG_PATH=etc/config-1.8.yaml
 
 Now we are ready to start the Vagrant VMs. You can select different cluster configurations depending on your needs. We have tested using a single master, three private agents and one bootstrap node using this command:
 

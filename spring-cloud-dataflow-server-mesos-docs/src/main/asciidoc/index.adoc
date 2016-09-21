@@ -15,7 +15,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :scst-starters-core-version: 1.0.2.RELEASE
 :sct-starters-core-version: 1.0.1.RELEASE
 
-:dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc
+:dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v{scdf-core-version}/spring-cloud-dataflow-docs/src/main/asciidoc
 :git-tag: master
 :docker-tag: latest
 
@@ -32,8 +32,6 @@ include::getting-started.adoc[]
 include::{dataflow-asciidoc}/streams.adoc[]
 
 include::{dataflow-asciidoc}/dashboard.adoc[]
-
-include::{dataflow-asciidoc}/howto.adoc[]
 
 include::appendix.adoc[]
 

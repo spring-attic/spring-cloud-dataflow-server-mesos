@@ -1,4 +1,4 @@
-= Spring Cloud Data Flow Server for Mesos
+= Spring Cloud Data Flow Server for Apache Mesos
 Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayaperumal Gopinathan, Gunnar Hillert, Mark Pollack, Patrick Peralta, Glenn Renfro, Gary Russell, Thomas Risberg, David Turanski, Janne Valkealahti
 :doctype: book
 :toc:
@@ -12,14 +12,18 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 // any git link should be the tag for a release and the branch for build snapshots
 :scdf-core-version: {dataflow-project-version}
 :scdf-core-git: v{scdf-core-version}
+:scde-mesos-version: 1.0.4.RELEASE
+:scde-mesos-git: v{scde-mesos-version}
 :scst-core-version: 1.0.2.RELEASE
 :sct-core-version: 1.0.2.RELEASE
 :scst-starters-core-version: 1.0.2.RELEASE
 :sct-starters-core-version: 1.0.1.RELEASE
 
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/{scdf-core-git}/spring-cloud-dataflow-docs/src/main/asciidoc
-:git-branch: master
-:docker-tag: latest
+
+// the following tags used for links don't have to exists during build but must exist once docs are published
+:git-branch-tag: v1.0.0.RELEASE
+:docker-tag: 1.0.0.RELEASE
 
 // ======================================================================================
 
@@ -32,6 +36,8 @@ include::{dataflow-asciidoc}/architecture.adoc[]
 include::getting-started.adoc[]
 
 include::{dataflow-asciidoc}/streams.adoc[]
+
+include::{dataflow-asciidoc}/tasks.adoc[]
 
 include::{dataflow-asciidoc}/dashboard.adoc[]
 

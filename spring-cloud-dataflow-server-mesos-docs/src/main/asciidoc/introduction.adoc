@@ -2,6 +2,6 @@
 = Introduction
 
 [[dataflow-mesos-intro]]
-== Introducing Spring Cloud Data Flow for Mesos and Marathon
+== Introducing Spring Cloud Data Flow Server for Apache Mesos
 
-This project provides support for orchestrating long-running (_streaming_) and short-lived (_task/batch_) data microservices to Marathon on Mesos.
+This project provides support for orchestrating long-running (_streaming_) and short-lived (_task/batch_) data microservices on Apache Mesos with Marathon and Chronos.

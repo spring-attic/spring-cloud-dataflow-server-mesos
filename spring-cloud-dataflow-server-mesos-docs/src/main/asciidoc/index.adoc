@@ -11,7 +11,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 // Since the core projects will be at different release cadences, the following tokens need changed at the time of every release
 // any git link should be the tag for a release and the branch for build snapshots
 :scdf-core-version: {dataflow-project-version}
-:scdf-core-git: v{scdf-core-version}
+:scdf-core-git: master
 :scde-mesos-version: 1.0.4.RELEASE
 :scde-mesos-git: v{scde-mesos-version}
 :scst-core-version: 1.0.2.RELEASE
@@ -22,8 +22,8 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/{scdf-core-git}/spring-cloud-dataflow-docs/src/main/asciidoc
 
 // the following tags used for links don't have to exists during build but must exist once docs are published
-:git-branch-tag: v1.0.0.RELEASE
-:docker-tag: 1.0.0.RELEASE
+:git-branch-tag: master
+:docker-tag: latest
 
 // ======================================================================================
 

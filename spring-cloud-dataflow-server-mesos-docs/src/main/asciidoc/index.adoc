@@ -18,7 +18,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :sct-starters-core-version: 1.0.1.RELEASE
 
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/{scdf-core-git}/spring-cloud-dataflow-docs/src/main/asciidoc
-:git-tag: master
+:git-branch: master
 :docker-tag: latest
 
 // ======================================================================================

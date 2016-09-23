@@ -14,7 +14,7 @@ We are using the Marathon endpoint URL of http://m1.dcos/service/marathon[http:/
 +
 . Create a MySQL service on the Mesos cluster.
 +
-The `mysql` service will be used for storing stream and task definitions in the stream and task repositories.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-tag}/src/etc/marathon/mysql.json[application JSON file for MySQL] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
+The `mysql` service will be used for storing stream and task definitions in the stream and task repositories.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-branch}/src/etc/marathon/mysql.json[application JSON file for MySQL] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
 +
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
 +
@@ -26,7 +26,7 @@ NOTE:  Note the `@` symbol to reference a file input for the `curl` command.
 +
 . Create a Rabbit MQ service on the Mesos cluster.
 +
-The `rabbitmq` service will be used for messaging between applications in the stream.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-tag}/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
+The `rabbitmq` service will be used for messaging between applications in the stream.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-branch}/src/etc/marathon/rabbitmq.json[application JSON file for Rabbit MQ] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
 +
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ service instance by issuing the following command
 +
@@ -36,7 +36,7 @@ curl -X POST http://m1.dcos/service/marathon/v2/apps -d @rabbitmq.json -H "Conte
 +
 . Create a Redis service on the Mesos cluster.
 +
-The `redis` service will be used for counters as part of the analytics.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-tag}/src/etc/marathon/redis.json[application JSON file for Redis] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
+The `redis` service will be used for counters as part of the analytics.  There is a sample https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-branch}/src/etc/marathon/redis.json[application JSON file for Redis] in the `spring-cloud-dataflow-server-mesos` repository that you can use as a starting point.  The service discovery mechanism is currently disabled so you need to look up the host and port to use for the connection.  Depending on how large your cluster is, you may want to tweak the CPU and/or memory values.
 +
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Redis service instance by issuing the following command
 +
@@ -60,7 +60,7 @@ Use the following command to download the Marathon application JSON file used to
 +
 [source,subs="attributes"]
 ----
-$ wget https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-tag}/src/etc/marathon/scdf-server.json
+$ wget https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow-server-mesos/{git-branch}/src/etc/marathon/scdf-server.json
 ----
 +
 We will need to modify the Docker image tag, API endpoints and host and port settings based on the current deployment environment. We hope to eliminiate most of this in future releases and instead rely on service discovery mechanisms. For now we do have to make the modifications manually. The downloaded file should look like this:
@@ -111,7 +111,7 @@ Finally we need to do the same for the key value store properties. Look up the h
     "REDIS_PORT": "19902",
 ```
 +
-You can add properties to the `SPRING_APPLICATION_JSON` property as well. You might want to set default values for memory and cpu resource request.  For example `\"spring.cloud.deployer.mesos.marathon.memory\"=\"768\"` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/master/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
+You can add properties to the `SPRING_APPLICATION_JSON` property as well. You might want to set default values for memory and cpu resource request.  For example `\"spring.cloud.deployer.mesos.marathon.memory\"=\"768\"` will by default allocate additional memory for the application vs. the default value of 512.  You can see all the available options in the https://raw.githubusercontent.com/spring-cloud/spring-cloud-deployer-mesos/{git-branch}/src/main/java/org/springframework/cloud/deployer/spi/mesos/marathon/MarathonAppDeployerProperties.java[MarathonAppDeployerProperties.java] file.
 +
 NOTE: DC/OS in secured mode requires an Authorization header with a token when accessing the Marathon and Chronos REST end-points. To accommodate this you need to provide this token when deploying the Spring Cloud Data Flow server to a DC/OS secured cluster. See below for instructions.
 +

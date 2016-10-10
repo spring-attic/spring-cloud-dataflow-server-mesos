@@ -46,6 +46,6 @@ When you are done with the Mesos cluster you can destroy it using:
 
 === Install Chronos as a Service running in Marathon 
 
-You can install Chronos by using the following `dcos` command. This requires that you install the  https://docs.mesosphere.com/1.7/usage/cli/install/[DC/OS CLI].
+You can install Chronos by using the following `dcos` command. This requires that you install the  https://docs.mesosphere.com/1.8/usage/cli/install/[DC/OS CLI].
 
     dcos package install chronos

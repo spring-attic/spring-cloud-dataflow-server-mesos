@@ -12,11 +12,11 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 // any git link should be the tag for a release and the branch for build snapshots
 :scdf-core-version: {dataflow-project-version}
 :scdf-core-git: master
-:scde-mesos-version: 1.0.4.RELEASE
-:scde-mesos-git: v{scde-mesos-version}
-:scst-core-version: 1.1.0.RELEASE
-:sct-core-version: 1.1.0.M1
-:scst-starters-core-version: 1.0.2.RELEASE
+:scde-mesos-version: 1.1.0.BUILD-SNAPSHOT
+:scde-mesos-git: master
+:scst-core-version: Brooklyn.RELEASE
+:sct-core-version: 1.1.0.M2
+:scst-starters-core-version: 1.0.4.RELEASE
 :sct-starters-core-version: 1.0.1.RELEASE
 
 :dataflow-asciidoc: https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/{scdf-core-git}/spring-cloud-dataflow-docs/src/main/asciidoc

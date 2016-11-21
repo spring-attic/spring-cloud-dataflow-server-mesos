@@ -9,7 +9,6 @@
 		<version>1.1.0.BUILD-SNAPSHOT</version>
 	</parent>
 	<name>spring-cloud-dataflow-server-mesos-docs</name>
-	<description>Spring Cloud Data Flow Admin Mesos</description>
 	<properties>
 		<main.basedir>${basedir}/..</main.basedir>
 	</properties>

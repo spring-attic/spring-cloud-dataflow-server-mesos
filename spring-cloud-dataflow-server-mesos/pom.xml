@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>spring-cloud-dataflow-server-mesos</artifactId>
 	<packaging>jar</packaging>
+	<name>Mesos Data Flow Server</name>
 	<description>Mesos Data Flow Server</description>
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
@@ -28,7 +29,6 @@
 					<include>META-INF/*.properties</include>
  					<include>META-INF/spring.factories</include>
 					<include>dataflow-server.yml</include>
-					<include>banner.txt</include>
  				</includes>
 			</resource>
 		</resources>

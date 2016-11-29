@@ -15,18 +15,38 @@
  */
 package org.springframework.cloud.dataflow.server.mesos;
 
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.deployer.resource.docker.DockerResourceLoader;
+import org.springframework.cloud.deployer.resource.support.DelegatingResourceLoader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MesosDataFlowServer.class)
 public class ContextLoadsTests {
 
-    @Test
-    public void contextLoads() {
+	@Autowired
+	private ApplicationContext context;
 
-    }
+	@Test
+	public void contextLoads() throws Exception {
+		assertThat(context.containsBean("delegatingResourceLoader"), is(true));
+		DelegatingResourceLoader delegatingResourceLoader = context.getBean(DelegatingResourceLoader.class);
+		Map<String, ResourceLoader> loaders = TestUtils.readField("loaders", delegatingResourceLoader);
+		assertThat(loaders.get("docker"), notNullValue());
+		ResourceLoader resourceLoader = loaders.get("docker");
+		assertThat(resourceLoader, instanceOf(DockerResourceLoader.class));
+	}
 
 }

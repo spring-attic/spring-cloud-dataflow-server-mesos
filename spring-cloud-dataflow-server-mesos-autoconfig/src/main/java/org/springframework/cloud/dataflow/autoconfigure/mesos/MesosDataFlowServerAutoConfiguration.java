@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.dataflow.server.mesos;
+package org.springframework.cloud.dataflow.autoconfigure.mesos;
 
 import java.util.HashMap;
 import java.util.Map;

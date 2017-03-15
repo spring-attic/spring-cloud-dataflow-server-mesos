@@ -12,13 +12,11 @@ First clone the `dcos-vagrant` project:
 
     git clone https://github.com/dcos/dcos-vagrant.git
 
-Download the DC/OS version you want to use, we used version 1.8.1 from https://dcos.io/releases/1.8.1/[https://dcos.io/releases/1.8.1/], and place this `dcos_generate_config.sh` file in the root directory of the cloned `dcos-project`.
+Copy the config file you'd like to use (the best file to use for our purposes is `VagrantConfig-1m-3a-1p.yaml`). From the root directory of the `dcos-vagrant` project execute:
 
-Copy the config example file. From the root directory of the `dcos-vagrant` project execute:
+    cp VagrantConfig-1m-3a-1p.yaml VagrantConfig.yaml
 
-    cp VagrantConfig.yaml.example VagrantConfig.yaml
-
-Update the `etc/config-1.8.yaml` file. Add a line with 
+Copy the `etc/config-1.8.yaml` file to `etc/config.yaml` and then add a line with 
 
 `oauth_enabled: 'false'` 
 
@@ -26,19 +24,18 @@ to the end of this file and save it. This will disable any security for the clus
 
 === Start Vagrant VMs for the Mesos cluster
 
-You need to install Vagrant and VirtualBox. We used the DC/OS version 1.8.1 with Vagrant version 1.8.4. 
+You need to install VirtualBox, Vagrant and Vagrant Host Manager Plugin. See https://github.com/dcos/dcos-vagrant#quick-start[Quick Start]. 
 
-Install Vagrant Host Manager Plugin if it isn't already installed:
+Download the DC/OS version you want to use, we used version 1.8.8 from https://dcos.io/releases/1.8.8/[https://dcos.io/releases/1.8.8/], and place this `dcos_generate_config.sh` file in the root directory of the cloned `dcos-project`.
 
-    vagrant plugin install vagrant-hostmanager
+Before we start the cluster we should define the config files we want to use:
 
-Before we start the cluster we should define the config file we want to use:
+    export DCOS_CONFIG_PATH=etc/config.yaml
+    export DCOS_GENERATE_CONFIG_PATH=dcos_generate_config.sh
 
-    export DCOS_CONFIG_PATH=etc/config-1.8.yaml
+Now we are ready to start the Vagrant VMs. You can select different cluster configurations depending on your needs. We have tested using a single master, two private agents and one bootstrap node using this command:
 
-Now we are ready to start the Vagrant VMs. You can select different cluster configurations depending on your needs. We have tested using a single master, three private agents and one bootstrap node using this command:
-
-    vagrant up m1 a1 a2 a3 boot
+    vagrant up m1 a1 a2 boot
 
 When you are done with the Mesos cluster you can destroy it using:
 
@@ -49,3 +46,5 @@ When you are done with the Mesos cluster you can destroy it using:
 You can install Chronos by using the following `dcos` command. This requires that you install the  https://docs.mesosphere.com/1.8/usage/cli/install/[DC/OS CLI].
 
     dcos package install chronos
+
+NOTE: The more recent DC/OS versions include Marathon version 3.0 which has changed the API endpoints. The 1.2 version of Spring Cloud Deployer for Mesos now support this Chronos 3.0 version but it is no longer compatible with older Chronos versions.

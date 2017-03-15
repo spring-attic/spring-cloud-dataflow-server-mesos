@@ -8,6 +8,8 @@ In this getting started the Data Flow Server is running as a Docker container in
 +
 The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting started guide] provides a number of options for you to deploy a cluster. There is also a number of options listed on Mesosphere's https://dcos.io/install/[Install DC/OS] page. In <<appendix-test-cluster.adoc#test-cluster>> we describe how we configured a local test cluster using the DC/OS Vagrant project.
 +
+NOTE: The more recent DC/OS versions include Marathon version 3.0 which has changed the API endpoints. The 1.2 version of Spring Cloud Deployer for Mesos now support this Chronos 3.0 version but it is no longer compatible with older Chronos versions.
++
 The rest of this getting started guide assumes that you have a working Mesos and Marathon cluster and know the Marathon endpoint URL.
 +
 We are using the Marathon endpoint URL of http://m1.dcos/service/marathon[http://m1.dcos/service/marathon] for this document. 

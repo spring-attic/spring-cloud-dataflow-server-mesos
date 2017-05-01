@@ -1,0 +1,34 @@
+[[configuration]]
+= Server Configuration
+
+[partintro]
+--
+In this section you will learn how to configure Spring Cloud Data Flow server's features such as the relational database to use and security.
+--
+
+[[enable-disable-specific-features]]
+== Feature Toggles
+
+Data Flow server offers specific set of features that can be enabled/disabled when launching. These features include all the lifecycle operations, REST endpoints (server, client implementations including Shell and the UI) for:
+
+. Streams
+. Tasks
+. Analytics
+
+You can enable or disable these features by setting the following boolean environment variables when launching the Data Flow server:
+
+* `SPRING_CLOUD_DATAFLOW_FEATURES_STREAMS_ENABLED`
+* `SPRING_CLOUD_DATAFLOW_FEATURES_TASKS_ENABLED`
+* `SPRING_CLOUD_DATAFLOW_FEATURES_ANALYTICS_ENABLED`
+
+By default, all the features are enabled.
+
+NOTE: Since analytics feature is enabled by default, the Data Flow server is expected to have a valid Redis store available as analytic repository as we provide a default implementation of analytics based on Redis. This also means that the Data Flow server's `health` depends on the redis store availability as well. If you do not want to enabled HTTP endpoints to read analytics data written to Redis, then disable the analytics feature using the property mentioned above.
+
+The REST endpoint `/features` provides information on the features enabled/disabled.
+
+[[configuration-general]]
+== General Configuration
+
+*TODO:* _Add more config coverage_
+

@@ -55,6 +55,19 @@
 						<groupId>org.asciidoctor</groupId>
 						<artifactId>asciidoctor-maven-plugin</artifactId>
 						<version>1.5.3</version>
+						<configuration>
+							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<doctype>book</doctype>
+							<attributes>
+								<allow-uri-read>true</allow-uri-read>
+								<attribute-missing>warn</attribute-missing>
+								<project-version>${project.version}</project-version>
+								<project-artifactId>${project.artifactId}</project-artifactId>
+								<version-type-lowercase>${version-type-lowercase}</version-type-lowercase>
+								<dataflow-project-version>${spring-cloud-dataflow.version}</dataflow-project-version>
+								<dataflow-version-type-lowercase>${dataflow-version-type-lowercase}</dataflow-version-type-lowercase>
+							</attributes>
+						</configuration>
 						<executions>
 							<execution>
 								<id>generate-docbook</id>
@@ -68,13 +81,19 @@
 									<doctype>book</doctype>
 									<attributes>
 										<docinfo>true</docinfo>
-										<dataflow-project-version>${spring-cloud-dataflow.version}</dataflow-project-version>
-										<project-version>${project.version}</project-version>
-										<project-artifactId>${project.artifactId}</project-artifactId>
-										<version-type-lowercase>${version-type-lowercase}</version-type-lowercase>
-										<dataflow-version-type-lowercase>${dataflow-version-type-lowercase}</dataflow-version-type-lowercase>
-										<allow-uri-read>true</allow-uri-read>
-										<attribute-missing>warn</attribute-missing>
+									</attributes>
+								</configuration>
+							</execution>
+							<execution>
+								<id>generate-html5</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+								<configuration>
+									<backend>html5</backend>
+									<attributes>
+										<toc2 />
 									</attributes>
 								</configuration>
 							</execution>

@@ -14,8 +14,8 @@
     }
   },
   "env": {
-    "MESOS_MARATHON_URI": "http://m1.dcos/service/marathon",
-    "MESOS_CHRONOS_URI": "http://m1.dcos/service/chronos",
+    "MESOS_MARATHON_URI": "https://m1.dcos/service/marathon",
+    "MESOS_CHRONOS_URI": "https://m1.dcos/service/chronos",
     "JDBC_URL": "jdbc:mysql://192.168.65.111:5769/test",
     "JDBC_DRIVER": "org.mariadb.jdbc.Driver",
     "JDBC_USERNAME": "spring",

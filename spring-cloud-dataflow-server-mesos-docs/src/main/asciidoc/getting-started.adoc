@@ -10,7 +10,7 @@ The https://open.mesosphere.com/getting-started/tools/[Mesosphere getting starte
 +
 The rest of this getting started guide assumes that you have a working Mesos and Marathon cluster and know the Marathon endpoint URL.
 +
-We are using the Marathon endpoint URL of http://m1.dcos/service/marathon[http://m1.dcos/service/marathon] for this document. 
+We are using the Marathon endpoint URL of https://m1.dcos/service/marathon[https://m1.dcos/service/marathon] for this document. 
 +
 . Create a MySQL service on the Mesos cluster.
 +
@@ -19,7 +19,7 @@ The `mysql` service will be used for storing stream and task definitions in the 
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ application instance by issuing the following command
 +
 ```
-curl -X POST http://m1.dcos/service/marathon/v2/apps -d @mysql.json -H "Content-type: application/json"
+curl -X POST https://m1.dcos/service/marathon/v2/apps -d @mysql.json -H "Content-type: application/json"
 ```
 +
 NOTE:  Note the `@` symbol to reference a file input for the `curl` command.
@@ -31,7 +31,7 @@ The `rabbitmq` service will be used for messaging between applications in the st
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Rabbit MQ service instance by issuing the following command
 +
 ```
-curl -X POST http://m1.dcos/service/marathon/v2/apps -d @rabbitmq.json -H "Content-type: application/json"
+curl -X POST https://m1.dcos/service/marathon/v2/apps -d @rabbitmq.json -H "Content-type: application/json"
 ```
 +
 . Create a Redis service on the Mesos cluster.
@@ -41,7 +41,7 @@ The `redis` service will be used for counters as part of the analytics.  There i
 Using the above JSON file and an Mesos and Marathon cluster installed you can deploy a Redis service instance by issuing the following command
 +
 ```
-curl -X POST http://m1.dcos/service/marathon/v2/apps -d @redis.json -H "Content-type: application/json"
+curl -X POST https://m1.dcos/service/marathon/v2/apps -d @redis.json -H "Content-type: application/json"
 ```
 +
 Using the Marathon and Mesos UIs you can verify that `mysql`, `rabbitmq` and `redis` services are running on the cluster.
@@ -80,8 +80,8 @@ First we need to modify the Docker image to use the tag `{docker-tag}`. It shoul
 In the `env` section there are several environment variables that we need to adjust. We need to provide the following properties for accessing Marathon and Chronos APIs:
 +
 ```
-    "MESOS_MARATHON_URI": "http://m1.dcos/service/marathon",
-    "MESOS_CHRONOS_URI": "http://m1.dcos/service/chronos",
+    "MESOS_MARATHON_URI": "https://m1.dcos/service/marathon",
+    "MESOS_CHRONOS_URI": "https://m1.dcos/service/chronos",
 ```
 +
 Here we did set them to the defaults for a local Vagrant DC/OS installation.
@@ -130,7 +130,7 @@ We also need to add the `spring.cloud.deployer.mesos.dcos.authorizationToken` pr
 +
 [source,subs="attributes"]
 ----
-curl -X POST http://m1.dcos/service/marathon/v2/apps -d @scdf-server.json -H "Content-type: application/json"
+curl -X POST https://m1.dcos/service/marathon/v2/apps -d @scdf-server.json -H "Content-type: application/json"
 ----
 +
 Verify that the `spring-cloud-data-flow` application is running before proceeding.
@@ -139,7 +139,7 @@ Verify that the `spring-cloud-data-flow` application is running before proceedin
 +
 [source,subs="attributes"]
 ----
-$ wget http://repo.spring.io/{dataflow-version-type-lowercase}/org/springframework/cloud/spring-cloud-dataflow-shell/{dataflow-project-version}/spring-cloud-dataflow-shell-{dataflow-project-version}.jar
+$ wget https://repo.spring.io/{dataflow-version-type-lowercase}/org/springframework/cloud/spring-cloud-dataflow-shell/{dataflow-project-version}/spring-cloud-dataflow-shell-{dataflow-project-version}.jar
 
 $ java -jar spring-cloud-dataflow-shell-{dataflow-project-version}.jar
 ----
@@ -147,13 +147,13 @@ $ java -jar spring-cloud-dataflow-shell-{dataflow-project-version}.jar
 Lookup the host and port for the `spring-cloud-data-flow` application in the Marathon UI. Use those values to configure the server URI for the shell:
 +
 ```
-dataflow:>dataflow config server --uri http://192.168.65.111:20043
+dataflow:>dataflow config server --uri https://192.168.65.111:20043
 ```
 +
-. By default, the application registry will be empty. If you would like to register all out-of-the-box stream applications built with the RabbitMQ binder in bulk, you can with the following command. For more details, review how to link:http://docs.spring.io/spring-cloud-dataflow/docs/{scdf-core-version}/reference/html/spring-cloud-dataflow-register-apps.html[register applications].
+. By default, the application registry will be empty. If you would like to register all out-of-the-box stream applications built with the RabbitMQ binder in bulk, you can with the following command. For more details, review how to link:https://docs.spring.io/spring-cloud-dataflow/docs/{scdf-core-version}/reference/html/spring-cloud-dataflow-register-apps.html[register applications].
 +
 ```
-dataflow:>app import --uri http://bit.ly/stream-applications-rabbit-docker
+dataflow:>app import --uri https://bit.ly/stream-applications-rabbit-docker
 ```
 +
 . Deploy a simple stream in the shell

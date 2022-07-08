@@ -1,3 +1,5 @@
+# spring-cloud-dataflow-server-mesos is no longer actively maintained by VMware, Inc.
+
 # Spring Cloud Dataflow Server for Apache Mesos
 
 This project provides support for deploying https://github.com/spring-cloud/spring-cloud-dataflow[Spring Cloud Data Flow]'s streaming data pipelines to Apache Mesos using Marathon and Chronos. It includes an implementation of Spring Cloud Data Flow’s https://github.com/spring-cloud/spring-cloud-deployer[Deployer SPI] using Marathon for stream apps and Chronos for task apps.
